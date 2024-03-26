@@ -20,6 +20,6 @@ jobs:
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPEN_AI_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           PR_REVIEWER.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions.'
           PR_DESCRIPTION.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions. Titles should have prefix of commitlint pattern such as `feat:`, `chore:`, `test:`, `fix:`, `ci:`, `docs:` etc'
