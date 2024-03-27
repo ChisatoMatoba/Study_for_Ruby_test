@@ -1,0 +1,48 @@
+name: RSpec Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test_mysql:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.1
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 20s --health-timeout 10s --health-retries 10
+
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libmysqlclient-dev
+          gem install bundler
+          bundle install
+
+      - name: Set up Database
+        run: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+
+      - name: Run rubocop
+        run: bundle exec rubocop
+
+      - name: Run RSpec
+        run: bundle exec rspec
