@@ -63,21 +63,6 @@ a {
 .cp_mobilebar {
   display: none;
 }
-/* content */
-.cp_container {
-  position: relative;
-  top: 0px;
-  margin-top: 0;
-  padding: 35px auto;
-  -webkit-transition: transform .3s ease-in;
-          transition: transform .3s ease-in;
-}
-.cp_content {
-  margin: 0 auto;
-  padding: 20px;
-  height: 65vh;
-  text-align: center;
-}
 @media (max-width: 767px) {
   /* menu */
   .cp_offcm02 {
@@ -176,7 +161,7 @@ a {
             transition-delay: 0s;
   }
   /* content */
-  .cp_container {
+  .container {
     top:60px;
   }
 }
