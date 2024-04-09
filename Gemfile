@@ -12,10 +12,13 @@ gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
+gem 'bootstrap', '~> 5.3.2'
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'rspec-rails'
+  gem 'sassc-rails', '~> 2.1'
 end
 
 group :development do
