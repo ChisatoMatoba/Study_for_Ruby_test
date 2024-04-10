@@ -31,21 +31,22 @@ a {
 }
 .cp_offcm02 nav ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   padding: 0;
   margin: 0;
   list-style: none;
-  width: 95%;
+  width: 100%;
   box-sizing: border-box;
 }
 .cp_offcm02 nav, .cp_offcm02 ul {
   height: 100%;
 }
 .cp_offcm02 li {
-  display: inline-block;
-  margin-right: -6px;
-  border: none;
   color: #ffffff;
+  display: inline-flex;
+  flex-grow: 1;
+  justify-content: center;
+  text-align: center;
 }
 .cp_offcm02 a {
   display: block;
