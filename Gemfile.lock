@@ -112,6 +112,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.12.0)
+      devise (>= 4.9.0)
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.12.0)
@@ -349,6 +351,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  devise-i18n
   importmap-rails
   jbuilder
   jquery-rails
