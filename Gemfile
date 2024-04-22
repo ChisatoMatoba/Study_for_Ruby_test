@@ -4,6 +4,8 @@ ruby '3.3.0'
 
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.3.2'
+gem 'devise'
+gem 'devise-i18n'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'jquery-rails'

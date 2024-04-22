@@ -6,14 +6,19 @@
   </label>
   </div>
   <header class="cp_offcm02">
-    <nav>
-    <ul>
-    <li><a href="/">TOP</a></li>
-    <li><a href="#">menu2</a></li>
-    <li><a href="#">menu3</a></li>
-    <li><a href="#">menu4</a></li>
-    <li><a href="#">menu5</a></li>
-    </ul>
-    </nav>
+    <nav><ul>
+      <li><a href="/">TOP</a></li>
+      <li><a href="#">menu2</a></li>
+      <li><a href="#">menu3</a></li>
+      <li><a href="#">menu4</a></li>
+      <li>
+        <% if user_signed_in? %>
+          <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-warning text-white" %>
+        <% else %>
+          <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
+          <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
+        <% end %>
+      </li>
+    </ul></nav>
   </header>
 </div>
