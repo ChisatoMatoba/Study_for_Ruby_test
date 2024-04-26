@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="content">
+    <h1>問題一覧</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>カテゴリ</th>
+          <th>問題数</th>
+          <th>作成日</th>
+          <th>最終更新日</th>
+        </th>
+      </thead>
+      <tbody>
+        <% @category.each do |category| %>
+          <tr>
+            <td><%= link_to category.name, category_path(category) %></td>
+            <td><%= category.questions.count %></td>
+            <td><%= category.created_at.strftime("%Y/%m/%d") %></td>
+            <td><%= category.updated_at.strftime("%Y/%m/%d") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="d-grid gap-2 col-4 mx-auto">
+      <%= link_to '新規作成', new_category_path, class: "btn btn-outline-info" %>
+    </div>
+  </div>
+</div>

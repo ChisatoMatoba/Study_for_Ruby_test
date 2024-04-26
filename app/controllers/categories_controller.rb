@@ -1,4 +1,8 @@
 class CategoriesController < ApplicationController
+  def index
+    @category = Category.all.includes(:questions)
+  end
+
   def new
     @category = Category.new
   end
