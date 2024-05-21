@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :categories do
     resources :questions do
       resources :choices
+
+      collection { post :import }
     end
   end
 end

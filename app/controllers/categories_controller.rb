@@ -18,19 +18,7 @@ class CategoriesController < ApplicationController
 
   def show
     @category = Category.find(params[:id])
-  end
-
-  def edit
-    @category = Category.find(params[:id])
-  end
-
-  def update
-    @category = Category.find(params[:id])
-    if @category.update(category_params)
-      redirect_to @category, notice: 'カテゴリが正常に更新されました。'
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    @questions = @category.questions.includes(:choices)
   end
 
   def destroy
