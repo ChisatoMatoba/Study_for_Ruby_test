@@ -3,10 +3,14 @@
     <h1><%= @category.name %></h1>
 
     <h2>問題登録</h2>
-    <p>CSVファイルをアップロードしてください</p>
+    <p>CSVファイルアップロード :</p>
     <%= form_with url: import_category_questions_path(@category), local: true, multipart: true do %>
       <div class="form-group mb-3">
         <%= file_field_tag :file %>
+      </div>
+      <div class="form-group mb-3">
+        <%= label_tag :overwrite, "同じ問題番号がある場合、上書きしますか？" %>
+        <%= check_box_tag :overwrite %>
       </div>
       <div class="form-group mb-3">
         <%= submit_tag "アップロード", class: "btn btn-primary mb-3" %>
