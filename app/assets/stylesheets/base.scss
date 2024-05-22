@@ -12,3 +12,18 @@
   padding: 0 100px;
   width: 100%;
 }
+
+/* Markdown */
+.inline-code {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+.code-block {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: monospace;
+}
