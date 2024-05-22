@@ -20,16 +20,25 @@
 
   <div class="content">
     <h2>問題一覧</h2>
+
     <% @questions&.each do |question| %>
-      <div>
-        <%= question.number %>: <%= question.content %>
-        <ul>
-          <% question.choices.each do |choice| %>
-            <li><%= choice.content %> (<%= choice.is_correct ? '◯' : '✕' %>)</li>
-          <% end %>
-        </ul>
-        解説: <%= question.explanation %>
-      </div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <%= question.number %>: <%= markdown(question.content) %>
+        </li>
+        <li class="list-group-item">
+          <ul class="list-group list-group-flush">
+            <% question.choices.each do |choice| %>
+              <li class="list-group-item list-group-item-primary">
+                <%= markdown(choice.content) %> → <%= choice.is_correct ? '◯' : '✕' %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          解説: <%= markdown(question.explanation) %>
+        </li>
+      </ul>
     <% end %>
   </div>
 </div>

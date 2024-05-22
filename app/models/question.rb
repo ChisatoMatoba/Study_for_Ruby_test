@@ -11,27 +11,34 @@ class Question < ApplicationRecord
   end
 
   def self.import(file, category, overwrite)
-    CSV.foreach(file.path, headers: true) do |row|
-      question = category.questions.find_by(number: row['number'])
+    errors = []
+    CSV.foreach(file.path, headers: true).with_index(1) do |row, line_number|
+      begin
+        question = category.questions.find_by(number: row['number'])
 
-      if question
-        if overwrite
-          question.update!(
+        if question
+          if overwrite
+            question.update!(
+              content: row['question_content'],
+              explanation: row['explanation']
+            )
+            question.choices.destroy_all
+            choices_create(question, row['choices'])
+          end
+        else
+          question = category.questions.create!(
+            number: row['number'],
             content: row['question_content'],
             explanation: row['explanation']
           )
-          question.choices.destroy_all
           choices_create(question, row['choices'])
         end
-      else
-        category.questions.create!(
-          number: row['number'],
-          content: row['question_content'],
-          explanation: row['explanation']
-        )
-        choices_create(question, row['choices'])
+      rescue StandardError => e
+        errors << "Line #{line_number}: #{e.message}"
       end
     end
+
+    raise "Import failed with the following errors:\n" + errors.join("\n") if errors.any?
   end
 
   private

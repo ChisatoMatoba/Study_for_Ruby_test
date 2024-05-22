@@ -3,10 +3,14 @@ class QuestionsController < ApplicationController
     @category = Category.find_by(id: params[:category_id])
     if params[:file].present?
       overwrite = params[:overwrite] == '1'
-      Question.import(params[:file], @category, overwrite)
-      redirect_to category_questions_path(@category), notice: '正常にインポートできました'
+      begin
+        Question.import(params[:file], @category, overwrite)
+        redirect_to category_questions_path(@category), notice: '正常にインポートできました'
+      rescue => e
+        redirect_to category_questions_path(@category), alert: e.message
+      end
     else
-      redirect_to new_category_question_path(@category), alert: 'インポートに失敗しました'
+      redirect_to category_questions_path(@category), alert: 'インポートに失敗しました'
     end
   end
 end
