@@ -44,8 +44,8 @@ class Question < ApplicationRecord
   private
 
   def self.choices_create(question, choices)
-    choices.split(',').each do |choice|
-      content, is_correct = choice.split('|')
+    choices.split(',,').each do |choice|
+      content, is_correct = choice.split('~')
       question.choices.create!(content: content.strip, is_correct: is_correct.strip == 'true')
     end
   end
