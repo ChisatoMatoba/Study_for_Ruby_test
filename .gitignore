@@ -67,3 +67,6 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 /public/uploads
+
+# Ignore csv files
+*.csv

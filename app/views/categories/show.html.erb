@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="content">
+    <%= link_to "←戻る", categories_path, class: "btn btn-outline-warning mb-5" %>
+
+    <h1><%= @category.name %></h1>
+
+    <h2>問題登録</h2>
+    <p>CSVファイルアップロード :</p>
+    <%= form_with url: import_category_questions_path(@category), local: true, multipart: true do %>
+      <div class="form-group mb-3">
+        <%= file_field_tag :file %>
+      </div>
+      <div class="form-group mb-3">
+        <%= label_tag :overwrite, "同じ問題番号がある場合、上書きしますか？" %>
+        <%= check_box_tag :overwrite %>
+      </div>
+      <div class="form-group mb-3">
+        <%= submit_tag "アップロード", class: "btn btn-primary mb-3" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="content">
+    <h2>問題一覧</h2>
+
+    <% @questions&.each do |question| %>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <%= question.number %>: <%= markdown(question.content) %>
+        </li>
+        <li class="list-group-item">
+          <ul class="list-group list-group-flush">
+            <% question.choices.each do |choice| %>
+              <li class="list-group-item list-group-item-primary">
+                <%= markdown(choice.content) %> → <%= choice.is_correct ? '◯' : '✕' %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          解説: <%= markdown(question.explanation) %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>
