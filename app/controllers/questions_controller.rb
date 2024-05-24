@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
       begin
         Question.import(params[:file], @category, overwrite)
         redirect_to category_questions_path(@category), notice: '正常にインポートできました'
-      rescue => e
+      rescue StandardError => e
         redirect_to category_questions_path(@category), alert: e.message
       end
     else

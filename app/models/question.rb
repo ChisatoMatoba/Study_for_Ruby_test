@@ -10,43 +10,44 @@ class Question < ApplicationRecord
     validates :number, uniqueness: { scope: :category_id }
   end
 
-  def self.import(file, category, overwrite)
-    errors = []
-    CSV.foreach(file.path, headers: true).with_index(1) do |row, line_number|
-      begin
+  class << self
+    def import(file, category, overwrite)
+      CSV.foreach(file.path, headers: true) do |row|
         question = category.questions.find_by(number: row['number'])
 
         if question
-          if overwrite
-            question.update!(
-              content: row['question_content'],
-              explanation: row['explanation']
-            )
-            question.choices.destroy_all
-            choices_create(question, row['choices'])
-          end
+          overwrite_question_choices(question, row) if overwrite
         else
-          question = category.questions.create!(
-            number: row['number'],
-            content: row['question_content'],
-            explanation: row['explanation']
-          )
-          choices_create(question, row['choices'])
+          create_question_choices(row, category)
         end
-      rescue StandardError => e
-        errors << "Line #{line_number}: #{e.message}"
       end
     end
 
-    raise "Import failed with the following errors:\n" + errors.join("\n") if errors.any?
-  end
+    private
 
-  private
+    def overwrite_question_choices(question, row)
+      question.update!(
+        content: row['question_content'],
+        explanation: row['explanation']
+      )
+      question.choices.destroy_all
+      choices_create(question, row['choices'])
+    end
 
-  def self.choices_create(question, choices)
-    choices.split(',,').each do |choice|
-      content, is_correct = choice.split('~')
-      question.choices.create!(content: content.strip, is_correct: is_correct.strip == 'true')
+    def create_question_choices(row, category)
+      question = category.questions.create!(
+        number: row['number'],
+        content: row['question_content'],
+        explanation: row['explanation']
+      )
+      choices_create(question, row['choices'])
+    end
+
+    def choices_create(question, choices)
+      choices.split(',,').each do |choice|
+        content, is_correct = choice.split('~')
+        question.choices.create!(content: content.strip, is_correct: is_correct.strip == 'true')
+      end
     end
   end
 end

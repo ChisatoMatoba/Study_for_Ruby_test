@@ -20,17 +20,17 @@ module ApplicationHelper
       no_intra_emphasis: true, # 単語内の強調を無効にする
       fenced_code_blocks: true, # フェンス付きコードブロックを有効にする
       lax_spacing: true, # 緩いスペーシングを有効にする
-      strikethrough: true, # 取り消し線を有効にする
+      strikethrough: true # 取り消し線を有効にする
     }
 
     # HTMLレンダラーを作成する
     renderer = CustomRender.new(render_options)
     # マークダウンをHTMLに変換し、結果をhtml_safeにする
-    Redcarpet::Markdown.new(renderer, extensions).render(text).html_safe
+    Redcarpet::Markdown.new(renderer, extensions).render(text).html_safe # rubocop:disable all
   end
 
   class CustomRender < Redcarpet::Render::HTML
-    def block_code(code, language)
+    def block_code(code, _language)
       "<pre class='code-block'><code>#{ERB::Util.html_escape(code)}</code></pre>"
     end
 
