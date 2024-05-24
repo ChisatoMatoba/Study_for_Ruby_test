@@ -69,4 +69,4 @@ yarn-debug.log*
 /public/uploads
 
 # Ignore csv files
-.csv
+*.csv
