@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @category = Category.all.includes(:questions)
+    @categories = Category.all.includes(:questions)
   end
 
   def new
@@ -27,6 +27,16 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])
     @category.destroy
     redirect_to categories_url, notice: 'カテゴリが正常に削除されました。'
+  end
+
+  def start_quiz
+    @category = Category.find(params[:id])
+    session[:question_ids] = @category.questions.pluck(:id)
+
+    # ランダムに並び替える
+    session[:question_ids].shuffle! if params[:random] == 'true'
+
+    redirect_to category_question_path(session[:question_ids].first) # 最初の問題へリダイレクト
   end
 
   private
