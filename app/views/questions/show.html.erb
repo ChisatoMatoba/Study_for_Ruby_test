@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="content">
+
+<h3>問題 <%= @question.number %> :</h3>
+    <%= markdown(@question.content) %>
+    <ul id="choices">
+      <% @choices.each_with_index do |choice, i| %>
+        <li class="choice" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
+      <% end %>
+    </ul>
+    <div id="selected_choices"></div>
+    <button id="submit_answers" class="btn btn-primary">回答</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const choices = document.querySelectorAll('.choice');
+    const selectedChoices = document.getElementById('selected_choices');
+
+    choices.forEach(choice => {
+      choice.addEventListener('click', function () {
+        this.classList.toggle('selected');
+        updateSelectedChoices();
+      });
+    });
+
+    function updateSelectedChoices() {
+      const selected = document.querySelectorAll('.choice.selected');
+      selectedChoices.innerHTML = '選択: ' + Array.from(selected).map(el => el.getAttribute('data-choice-id')).join(', ');
+    }
+
+    function updateSelectedChoices() {
+      const selected = document.querySelectorAll('.choice.selected');
+      selectedChoices.innerHTML = '選択: ' + Array.from(selected).map(el => el.textContent.split(':')[0].trim()).join(', ');
+    }
+
+    document.getElementById('submit_answers').addEventListener('click', function() {
+      const selected = document.querySelectorAll('.choice.selected');
+      const selectedIds = Array.from(selected).map(el => el.getAttribute('data-choice-id'));
+      // ここで選択されたIDをサーバーに送信する処理を追加
+    });
+  });
+</script>
+
+<style>
+  .selected {
+    background-color: #ff0; /* 選択状態の背景色 */
+  }
+</style>
