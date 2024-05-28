@@ -35,8 +35,7 @@ class CategoriesController < ApplicationController
 
     # ランダムに並び替える
     session[:question_ids].shuffle! if params[:random] == 'true'
-
-    redirect_to category_question_path(session[:question_ids].first) # 最初の問題へリダイレクト
+    redirect_to category_question_path(@category, session[:question_ids].first) # 最初の問題へリダイレクト
   end
 
   private

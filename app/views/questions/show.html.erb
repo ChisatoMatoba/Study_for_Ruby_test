@@ -3,13 +3,17 @@
 
 <h3>問題 <%= @question.number %> :</h3>
     <%= markdown(@question.content) %>
-    <ul id="choices">
-      <% @choices.each_with_index do |choice, i| %>
-        <li class="choice" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
-      <% end %>
-    </ul>
-    <div id="selected_choices"></div>
-    <button id="submit_answers" class="btn btn-primary">回答</button>
+    <div class="card mb-3">
+      <ul id="choices", class="list-group list-group-flush">
+        <% @choices.each_with_index do |choice, i| %>
+          <li class="choice list-group-item" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card border-light mb-3">
+      <h5><div id="selected_choices", class="text-center"></div></h5>
+      <button id="submit_answers", class="btn btn-outline-success">回答</button>
+    </div>
   </div>
 </div>
 
@@ -45,6 +49,6 @@
 
 <style>
   .selected {
-    background-color: #ff0; /* 選択状態の背景色 */
+    background-color: #e0ffff; /* 選択状態の背景色 */
   }
 </style>
