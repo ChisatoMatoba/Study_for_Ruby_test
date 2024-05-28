@@ -8,9 +8,7 @@ Rails.application.routes.draw do
     end
 
     resources :questions do
-      resources :choices
-
-      member { get :next_question } # 次の問題を表示するアクション
+      member { post :check_answer } # 回答チェックアクション
       collection { post :import } # CSVインポートアクション
     end
   end

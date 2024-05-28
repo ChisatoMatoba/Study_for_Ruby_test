@@ -1,26 +1,38 @@
-<div class="container">
-  <div class="content">
+<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>">
+  <div class="container">
+    <div class="content">
+      <h3>問題 <%= @question.number %> :</h3>
 
-<h3>問題 <%= @question.number %> :</h3>
-    <%= markdown(@question.content) %>
-    <div class="card mb-3">
-      <ul id="choices", class="list-group list-group-flush">
-        <% @choices.each_with_index do |choice, i| %>
-          <li class="choice list-group-item" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
-        <% end %>
-      </ul>
+      <%= markdown(@question.content) %>
+      <div class="card mb-3">
+        <ul id="choices" class="list-group list-group-flush">
+          <% @choices.each_with_index do |choice, i| %>
+            <li class="choice list-group-item" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="card border-light mb-3">
+        <h5><div id="selected_choices" class="text-center"></div></h5>
+        <button id="submit_answers" class="btn btn-outline-success">回答</button>
+      </div>
     </div>
-    <div class="card border-light mb-3">
-      <h5><div id="selected_choices", class="text-center"></div></h5>
-      <button id="submit_answers", class="btn btn-outline-success">回答</button>
+
+    <div class="content">
+      <div id="result_display" class=""></div>
+      <div id="correct_answers" class=""></div>
+      <div id="explanation" class=""></div>
+      <button id="next_button" class="btn btn-primary" style="display:none;">次へ</button>
     </div>
   </div>
-</div>
+</body>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('turbo:load', function () {
     const choices = document.querySelectorAll('.choice');
     const selectedChoices = document.getElementById('selected_choices');
+    const submitButton = document.getElementById('submit_answers');
+    const resultDisplay = document.getElementById('result_display');
+    const nextButton = document.getElementById('next_button');
 
     choices.forEach(choice => {
       choice.addEventListener('click', function () {
@@ -31,24 +43,35 @@
 
     function updateSelectedChoices() {
       const selected = document.querySelectorAll('.choice.selected');
-      selectedChoices.innerHTML = '選択: ' + Array.from(selected).map(el => el.getAttribute('data-choice-id')).join(', ');
-    }
-
-    function updateSelectedChoices() {
-      const selected = document.querySelectorAll('.choice.selected');
       selectedChoices.innerHTML = '選択: ' + Array.from(selected).map(el => el.textContent.split(':')[0].trim()).join(', ');
     }
 
-    document.getElementById('submit_answers').addEventListener('click', function() {
+    submitButton.addEventListener('click', function() {
       const selected = document.querySelectorAll('.choice.selected');
       const selectedIds = Array.from(selected).map(el => el.getAttribute('data-choice-id'));
-      // ここで選択されたIDをサーバーに送信する処理を追加
+      // サーバーに選択肢のIDを送信して正解判定を受け取る
+      fetch(`/categories/${document.querySelector('body').dataset.categoryId}/questions/${document.querySelector('body').dataset.questionId}/check_answer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector("[name='csrf-token']").content
+        },
+        body: JSON.stringify({
+          question_id: document.querySelector('body').dataset.questionId,
+          choice_ids: selectedIds
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        resultDisplay.textContent = data.is_correct ? '正解！' : '不正解';
+        document.getElementById('correct_answers').textContent = '正しい選択肢: ' + data.correct_choices.join(', ');
+        document.getElementById('explanation').textContent = '解説: ' + data.explanation;
+        submitButton.disabled = true;
+        if (nextButton) {
+          nextButton.style.display = 'block';
+        }
+      })
+      .catch(error => console.error('Error:', error));
     });
   });
 </script>
-
-<style>
-  .selected {
-    background-color: #e0ffff; /* 選択状態の背景色 */
-  }
-</style>

@@ -21,19 +21,12 @@ class QuestionsController < ApplicationController
     @choices = @question.choices
   end
 
-  def answer
-    @question = Question.find(params[:id])
-    selected_choices = params[:choices] || []
-    correct_choices = question.choices.where(is_correct: true).pluck(:id).map(&:to_s)
-    is_correct = (selected_choices.sort == correct_choices.sort)
-
-    current_user.quiz_results.create!(
-      category: @question.category,
-      question: @question,
-      correct: is_correct,
-      answer_detail: selected_choices.join(',')
-    )
-
-    # 次の質問へのリダイレクトや結果表示の処理を
+  def check_answer
+    @question = Question.find(params[:question_id])
+    correct_choice_ids = @question.choices.where(is_correct: true).pluck(:id)
+    is_correct = (params[:choice_ids].map(&:to_i) - correct_choice_ids).empty? && (correct_choice_ids - params[:choice_ids].map(&:to_i)).empty?
+    correct_choices = Choice.find(correct_choice_ids).map(&:content)
+    explanation = @question.explanation
+    render json: { is_correct: is_correct, correct_choices: correct_choices, explanation: explanation }
   end
 end
