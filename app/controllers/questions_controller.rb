@@ -29,4 +29,18 @@ class QuestionsController < ApplicationController
     explanation = @question.explanation
     render json: { is_correct: is_correct, correct_choices: correct_choices, explanation: explanation }
   end
+
+  def next
+    @question = Question.find(params[:id])
+    question_ids = session[:question_ids]
+
+    current_index = question_ids.index(@question.id)
+    next_question_id = question_ids[current_index + 1] if current_index
+
+    if next_question_id
+      redirect_to category_question_path(@question.category, next_question_id)
+    else
+      redirect_to categories_path, notice: "これは最後の質問です"
+    end
+  end
 end

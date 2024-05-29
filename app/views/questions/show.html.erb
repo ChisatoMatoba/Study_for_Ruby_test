@@ -1,4 +1,4 @@
-<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>">
+<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-next-question-url="<%= next_category_question_path(@question.category, @question) %>">
   <div class="container">
     <div class="content">
       <h3>問題 <%= @question.number %> :</h3>
@@ -67,11 +67,13 @@
         document.getElementById('correct_answers').textContent = '正しい選択肢: ' + data.correct_choices.join(', ');
         document.getElementById('explanation').textContent = '解説: ' + data.explanation;
         submitButton.disabled = true;
-        if (nextButton) {
-          nextButton.style.display = 'block';
-        }
+        nextButton.style.display = 'block';
       })
-      .catch(error => console.error('Error:', error));
+    });
+
+    nextButton.addEventListener('click', function() {
+      const nextQuestionUrl = document.querySelector('body').dataset.nextQuestionUrl;
+      window.location.href = nextQuestionUrl;
     });
   });
 </script>
