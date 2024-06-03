@@ -31,11 +31,22 @@ class CategoriesController < ApplicationController
 
   def start_quiz
     @category = Category.find(params[:id])
+
+    # セッションのリセット
+    session[:question_ids] = nil
+    session[:results] = nil
+
     session[:question_ids] = @category.questions.pluck(:id)
 
     # ランダムに並び替える
     session[:question_ids].shuffle! if params[:random] == 'true'
     redirect_to category_question_path(@category, session[:question_ids].first) # 最初の問題へリダイレクト
+  end
+
+  def results
+    @category = Category.find(params[:id])
+    @questions = @category.questions
+    @results = session[:results]
   end
 
   private

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :categories do
     member do
       get :start_quiz # クイズ開始アクション
+      get :results # 結果表示アクション
     end
 
     resources :questions do

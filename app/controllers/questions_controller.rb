@@ -19,15 +19,28 @@ class QuestionsController < ApplicationController
   def show
     @question = Question.find(params[:id])
     @choices = @question.choices
+    @show_solution = params[:show_solution] == 'true'
   end
 
   def check_answer
     @question = Question.find(params[:question_id])
+    selected_ids = params[:choice_ids].map(&:to_i)
     correct_choice_ids = @question.choices.where(is_correct: true).pluck(:id)
+
     is_correct = (params[:choice_ids].map(&:to_i) - correct_choice_ids).empty? && (correct_choice_ids - params[:choice_ids].map(&:to_i)).empty?
     correct_choices = Choice.find(correct_choice_ids).map(&:content)
-    explanation = @question.explanation
-    render json: { is_correct: is_correct, correct_choices: correct_choices, explanation: explanation }
+
+    # セッションに結果を保存
+    session[:results] ||= {}
+    session[:results][@question.id] = {
+      selected: selected_ids,
+      correct: correct_choice_ids,
+      is_correct: is_correct
+    }
+
+    respond_to do |format|
+      format.json { render json: { is_correct: is_correct, correct_choices: correct_choices, explanation: @question.explanation } }
+    end
   end
 
   def next
@@ -40,7 +53,7 @@ class QuestionsController < ApplicationController
     if next_question_id
       redirect_to category_question_path(@question.category, next_question_id)
     else
-      redirect_to categories_path, notice: "これは最後の質問です"
+      redirect_to results_category_path(@question.category)
     end
   end
 end

@@ -11,18 +11,38 @@
           <% end %>
         </ul>
       </div>
-      <div class="card border-light mb-3">
-        <h5><div id="selected_choices" class="text-center"></div></h5>
-        <button id="submit_answers" class="btn btn-outline-success">回答</button>
-      </div>
+      <% unless @show_solution %>
+        <div class="card border-light mb-3">
+          <h5><div id="selected_choices" class="text-center"></div></h5>
+          <button id="submit_answers" class="btn btn-outline-success">回答</button>
+        </div>
+      <% end %>
     </div>
 
-    <div class="content">
-      <div id="result_display" class=""></div>
-      <div id="correct_answers" class=""></div>
-      <div id="explanation" class=""></div>
-      <button id="next_button" class="btn btn-primary" style="display:none;">次へ</button>
-    </div>
+    <% if @show_solution %>
+      <div class="card bg-warning bg-opacity-10 mb-3">
+        <ul>
+          <li class="mt-3">正しい選択肢:</li>
+          <% @question.choices.where(is_correct: true).each do |choice| %>
+            <li><%= markdown(choice.content) %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="card bg-info bg-opacity-10 mb-3">
+        <ul>
+          <li class="mt-3">解説:</li>
+          <li><%= @question.explanation %></li>
+        </ul>
+      </div>
+      <%= link_to '←結果ページに戻る', results_category_path(@question.category), class: "btn  btn-outline-warning" %>
+    <% else %>
+      <div class="content">
+        <div id="result_display" class=""></div>
+        <div id="correct_answers" class=""></div>
+        <div id="explanation" class=""></div>
+        <button id="next_button" class="btn btn-primary" style="display:none;">次へ</button>
+      </div>
+    <% end %>
   </div>
 </body>
 
