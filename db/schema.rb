@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_22_125849) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_27_111312) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -37,6 +37,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_125849) do
     t.index ["category_id"], name: "index_questions_on_category_id"
   end
 
+  create_table "quiz_results", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
+    t.bigint "question_id", null: false
+    t.boolean "correct"
+    t.text "answer_detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_quiz_results_on_category_id"
+    t.index ["question_id"], name: "index_quiz_results_on_question_id"
+    t.index ["user_id"], name: "index_quiz_results_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -52,4 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_125849) do
 
   add_foreign_key "choices", "questions"
   add_foreign_key "questions", "categories"
+  add_foreign_key "quiz_results", "categories"
+  add_foreign_key "quiz_results", "questions"
+  add_foreign_key "quiz_results", "users"
 end

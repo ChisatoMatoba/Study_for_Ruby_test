@@ -3,10 +3,17 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :categories do
-    resources :questions do
-      resources :choices
+    member do
+      get :start_quiz # クイズ開始アクション
+      get :results # 結果表示アクション
+    end
 
-      collection { post :import }
+    resources :questions do
+      member do
+        post :check_answer # 回答チェックアクション
+        get :next # 次の問題への遷移アクション
+      end
+      collection { post :import } # CSVインポートアクション
     end
   end
 end
