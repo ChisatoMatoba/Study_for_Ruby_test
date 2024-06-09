@@ -39,24 +39,23 @@ document.addEventListener('turbo:load', function () {
     })
     .then(response => response.json())
     .then(data => {
-      // resultDisplay.textContent = data.is_correct ? '正解！' : '不正解';
       if (data.is_correct) {
-        resultDisplay.textContent = '正解！';
-        resultDisplay.classList.add('alert-success');
-        resultDisplay.classList.remove('alert-danger');
+        resultDisplay.textContent = '正解！！';
+        resultDisplay.classList.add('bg-warning');
+        resultDisplay.classList.remove('bg-danger');
       } else {
-        resultDisplay.textContent = '不正解';
-        resultDisplay.classList.add('alert-danger');
-        resultDisplay.classList.remove('alert-success');
+        resultDisplay.textContent = '不正解！！';
+        resultDisplay.classList.add('bg-danger');
+        resultDisplay.classList.remove('bg-warning');
       }
       resultDisplay.classList.add('animated');
 
       // レスポンスから取得したMarkdown形式のテキストをHTMLに変換して表示
       const markdownContent = '\n' + data.correct_choices.map(choice => `- ${choice}`).join('\n');
-      document.getElementById('correct_answers').innerHTML = marked.parse('正しい選択肢: ' + markdownContent);
+      document.getElementById('correct_answers').innerHTML = marked.parse('<b>正しい選択肢</b>' + markdownContent);
 
-      document.getElementById('explanation').innerHTML = '解説: <br>' + data.explanation;
-      submitButton.disabled = true;
+      document.getElementById('explanation').innerHTML = '<b>解説</b>' + data.explanation;
+      submitButton.style.display = 'none';
       resultCard.style.display = 'block';
     })
   });
