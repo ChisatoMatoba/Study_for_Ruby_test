@@ -2,3 +2,18 @@
 .selected {
   background-color: #e0ffff;
 }
+
+.alert-success {
+  background-color: green;
+}
+.alert-danger {
+  background-color: red;
+}
+.animated {
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

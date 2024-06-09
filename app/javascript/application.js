@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "popper"
 import "bootstrap"
+import "question_answer"
 
 import jquery from "jquery"
 window.$ = jquery
