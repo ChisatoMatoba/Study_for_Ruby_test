@@ -36,11 +36,11 @@
       </div>
       <%= link_to '←結果ページに戻る', results_category_path(@question.category), class: "btn  btn-outline-warning" %>
     <% else %>
-      <div class="content">
+      <div id="result_card" class="content" style="display:none;">
         <div id="result_display" class=""></div>
-        <div id="correct_answers" class=""></div>
-        <div id="explanation" class=""></div>
-        <button id="next_button" class="btn btn-primary" style="display:none;">次へ</button>
+        <div id="correct_answers" class="card bg-warning bg-opacity-10 mb-3"></div>
+        <div id="explanation" class="card bg-info bg-opacity-10 mb-3"></div>
+        <button id="next_button" class="btn btn-primary">次へ</button>
       </div>
     <% end %>
   </div>
@@ -51,6 +51,7 @@
     const choices = document.querySelectorAll('.choice');
     const selectedChoices = document.getElementById('selected_choices');
     const submitButton = document.getElementById('submit_answers');
+    const resultCard = document.getElementById('result_card');
     const resultDisplay = document.getElementById('result_display');
     const nextButton = document.getElementById('next_button');
 
@@ -84,10 +85,13 @@
       .then(response => response.json())
       .then(data => {
         resultDisplay.textContent = data.is_correct ? '正解！' : '不正解';
-        document.getElementById('correct_answers').textContent = '正しい選択肢: ' + data.correct_choices.join(', ');
-        document.getElementById('explanation').textContent = '解説: ' + data.explanation;
+        // レスポンスから取得したMarkdown形式のテキストをHTMLに変換して表示
+        const markdownContent = '\n' + data.correct_choices.map(choice => `- ${choice}`).join('\n');
+        document.getElementById('correct_answers').innerHTML = marked.parse('正しい選択肢: ' + markdownContent);
+
+        document.getElementById('explanation').innerHTML = '解説: <br>' + data.explanation;
         submitButton.disabled = true;
-        nextButton.style.display = 'block';
+        resultCard.style.display = 'block';
       })
     });
 
