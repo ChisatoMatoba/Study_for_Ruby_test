@@ -1,5 +1,25 @@
 <div class="container">
   <div class="content">
-    <h1>contents</h1>
+    <h1>Ruby試験対策アプリ</h1>
+    <p>このアプリはRubyの試験対策を目的としています。</p>
+
+    <h2>使い方</h2>
+    <p>1. このアプリでは成績管理のためにログインが必要です。まだの方はまずユーザー登録してください！</p>
+    <% if user_signed_in? %>
+      <%= link_to 'マイページ', user_path(current_user), class: "btn btn-outline-warning" %>
+    <% else %>
+      <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-warning" %>
+      <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning" %>
+    <% end %>
+
+    <p>2. 問題を登録します。問題はカテゴリーごとに登録できます。</p>
+    <p>3. 問題を解いてみましょう！</p>
+    <%= link_to "問題一覧", categories_path, class: "btn btn-outline-warning" %>
+
+
+    <p>4. ログインして、解いた問題の成績を確認できます。</p>
+    <% if user_signed_in? %>
+      <%= link_to 'マイページ', user_path(current_user), class: "btn btn-outline-warning" %>
+    <% end %>
   </div>
 </div>
