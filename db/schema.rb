@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_27_111312) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_10_144149) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -41,10 +41,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_27_111312) do
     t.bigint "user_id", null: false
     t.bigint "category_id", null: false
     t.bigint "question_id", null: false
-    t.boolean "correct"
-    t.text "answer_detail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "selected", null: false
+    t.json "correct", null: false
+    t.boolean "is_correct", null: false
     t.index ["category_id"], name: "index_quiz_results_on_category_id"
     t.index ["question_id"], name: "index_quiz_results_on_question_id"
     t.index ["user_id"], name: "index_quiz_results_on_user_id"
