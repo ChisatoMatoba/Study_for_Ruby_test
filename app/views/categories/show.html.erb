@@ -5,19 +5,21 @@
     <h1><%= @category.name %></h1>
 
     <h2>問題登録</h2>
-    <p>CSVファイルアップロード :</p>
-    <%= form_with url: import_category_questions_path(@category), local: true, multipart: true do %>
-      <div class="form-group mb-3">
-        <%= file_field_tag :file %>
-      </div>
-      <div class="form-group mb-3">
-        <%= label_tag :overwrite, "同じ問題番号がある場合、上書きしますか？" %>
-        <%= check_box_tag :overwrite %>
-      </div>
-      <div class="form-group mb-3">
-        <%= submit_tag "アップロード", class: "btn btn-primary mb-3" %>
-      </div>
-    <% end %>
+    <div class="container card mb-3">
+      <p>CSVファイルアップロードにより登録します。csvの記載ルールは<a href="/csv_upload_guidelines" type="button" class="btn btn-link">こちら</a></p>
+      <%= form_with url: import_category_questions_path(@category), local: true, multipart: true do %>
+        <div class="form-group mb-3">
+          <%= file_field_tag :file %>
+        </div>
+        <div class="form-group mb-3">
+          <%= label_tag :overwrite, "同じ問題番号がある場合、上書きしますか？" %>
+          <%= check_box_tag :overwrite %>
+        </div>
+        <div class="form-group mb-3">
+          <%= submit_tag "アップロード", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="content">

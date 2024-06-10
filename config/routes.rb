@@ -16,4 +16,6 @@ Rails.application.routes.draw do
       collection { post :import } # CSVインポートアクション
     end
   end
+
+  get '/csv_upload_guidelines', to: 'home#csv_upload_guidelines'
 end

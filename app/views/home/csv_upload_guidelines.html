@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="content">
+    <h1>CSVアップロードガイドライン</h1>
+    <p>このアプリではCSVファイルを使って問題を一括登録することができます。</p>
+
+    <h3>CSVファイルの記載例</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>number</th>
+          <th>question_content</th>
+          <th>explanation</th>
+          <th>choices</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>ソースコードの文字コードをUS-ASCIIに設定するマジックコメントの書き方として正しいものをすべて選択してください。</td>
+          <td>マジックコメントは「coding: エンコーディング名」が正しければ、その前後には任意の文字を並べることができます。また、大文字・小文字の区別もありません。</td>
+          <td>`# coding: us-ascii`~true,,`# encoding: us-ascii`~true,,`# -*- charset: us-ascii -*-`~false,,`# CODING: US-ASCII`~true</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>以下のコードを実行するとどうなりますか。<br>
+            ```<br>
+            1:x = 0<br>
+            2:def hoge<br>
+            3:  (1...5).each do |i|<br>
+            4:    x += 1<br>
+            5:  end<br>
+            6:  puts x<br>
+            7:end<br>
+            8:hoge<br>
+            ```</td>
+          <td>メソッド内と外とでは、変数名が同じでも別の変数として扱われます。出題コードの1行目と4行目の変数xは、それぞれ別の変数です。hogeメソッド内の変数xは4行目が初出です。ここで自己代入演算子+=を使用して1を加算していますが、自己代入演算子は、最初に左オペランドを評価（値を参照）するため、定義されていない変数xを参照することになります。定義されていない変数を参照すると、例外が発生します。</td>
+          <td>`4`が表示される。~false,, `5`が表示される。~false,, 例外が発生する。~true,, `0`が表示される。~false</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>留意事項</h4>
+    <ul>
+      <li>・CSVファイルはUTF-8で保存してください。</li>
+      <li>・CSVファイルの拡張子は「.csv」にしてください。</li>
+      <li>・CSVファイルの1行目はヘッダー行として、number, question_content, explanation, choicesの順で記載してください。</li>
+      <li>・choicesは選択肢と正解の情報を「~」で区切って記載してください。正解の選択肢には「true」、不正解の選択肢には「false」を記載してください。</li>
+      <li>・choicesの選択肢は「,,」で区切ってください。</li>
+      <li>・question_contentとchoicesでは、markdown記法での記載が可能です。改行も反映されます。</li>
+    </ul>
+
+    <h3>CSVファイルのアップロード方法</h3>
+    <ul>
+      <li>・csvファイルを選択し、アップロードして下さい。</li>
+      <li>・同じ問題番号がある場合に、上書きするかどうかを選択できます。</li>
+    </ul>
