@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_144149) do
     t.json "selected", null: false
     t.json "correct", null: false
     t.boolean "is_correct", null: false
+    t.datetime "session_ts", null: false
     t.index ["category_id"], name: "index_quiz_results_on_category_id"
     t.index ["question_id"], name: "index_quiz_results_on_question_id"
     t.index ["user_id"], name: "index_quiz_results_on_user_id"
