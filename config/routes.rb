@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: :show
+  resources :users, only: :show do
+    resources :results, only: :destroy
+  end
+
   get '/csv_upload_guidelines', to: 'home#csv_upload_guidelines'
 end
