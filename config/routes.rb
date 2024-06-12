@@ -5,14 +5,9 @@ Rails.application.routes.draw do
   resources :categories do
     member do
       get :start_quiz # クイズ開始アクション
-      get :results # 結果表示アクション
     end
 
-    collection do
-      get 'results_by_session/:session_ts', to: 'categories#results_by_session', as: 'results_by_session'
-    end
-
-    resources :questions do
+    resources :questions, only: :show do
       member do
         post :check_answer # 回答チェックアクション
         get :next # 次の問題への遷移アクション
@@ -21,9 +16,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: :show do
-    resources :results, only: :destroy
-  end
+  resources :users, only: :show
 
-  get '/csv_upload_guidelines', to: 'home#csv_upload_guidelines'
+  resources :results, only: %i(index show destroy) do
+    collection do
+      get :create_quiz, to: 'results#create_quiz_results' # クイズ結果登録アクション
+    end
+  end
 end

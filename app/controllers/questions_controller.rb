@@ -19,7 +19,6 @@ class QuestionsController < ApplicationController
   def show
     @question = Question.find(params[:id])
     @choices = @question.choices
-    @show_solution = params[:show_solution] == 'true'
   end
 
   def check_answer
@@ -53,7 +52,7 @@ class QuestionsController < ApplicationController
     if next_question_id
       redirect_to category_question_path(@question.category, next_question_id)
     else
-      redirect_to results_category_path(@question.category)
+      redirect_to create_quiz_results_path
     end
   end
 end
