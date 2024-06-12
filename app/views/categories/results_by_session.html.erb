@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>成績詳細</h1>
+
+  <div class="content">
+    <h5>カテゴリー: <%= @category.name %></h5>
+    <h5>問題数: <%= @category.questions.count %></h5>
+
+
+    <table class="table table-borderless table-hover align-middle">
+      <thead>
+        <tr>
+          <th>問題番号</th>
+          <th>結果</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @quiz_results.each do |result| %>
+          <tr>
+            <td><%= result.question.number %>
+            </td>
+            <td>
+              <%= result.is_correct ? "正解" : "不正解" %>
+            </td>
+            <td>
+              <%= link_to '問題と解説を見る', category_question_path(@category, result.question, show_solution: true), class: "btn btn-success" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+      <%= link_to '←マイページに戻る', user_path(current_user), class: "btn  btn-outline-warning" %>
+  </div>
+</div>
