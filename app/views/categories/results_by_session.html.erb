@@ -1,12 +1,12 @@
 <div class="container">
-  <h1>成績発表！！</h1>
+  <h1>成績詳細</h1>
 
   <div class="content">
     <h5>カテゴリー: <%= @category.name %></h5>
-    <h5>問題数: <%= @questions.count %></h5>
+    <h5>問題数: <%= @category.questions.count %></h5>
 
 
-    <table class="table table-borderless table-hover">
+    <table class="table table-borderless table-hover align-middle">
       <thead>
         <tr>
           <th>問題番号</th>
@@ -30,6 +30,6 @@
       </tbody>
     </table>
 
-      <%= link_to '←トップページに戻る', root_path, class: "btn  btn-outline-warning" %>
+      <%= link_to '←マイページに戻る', user_path(current_user), class: "btn  btn-outline-warning" %>
   </div>
 </div>

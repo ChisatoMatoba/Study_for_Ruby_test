@@ -46,7 +46,27 @@ class CategoriesController < ApplicationController
   def results
     @category = Category.find(params[:id])
     @questions = @category.questions
-    @results = session[:results]
+
+    session_ts = Time.current.strftime('%Y%m%d%H%M%S').to_i
+    @quiz_results = []
+    session[:results].each do |question_id, result|
+      quiz_result = QuizResult.create!(
+        user_id: current_user.id,
+        category_id: @category.id,
+        question_id: question_id,
+        selected: result['selected'],
+        correct: result['correct'],
+        is_correct: result['is_correct'],
+        session_ts: session_ts
+      )
+      @quiz_results << quiz_result
+    end
+  end
+
+  def results_by_session
+    @session_ts = params[:session_ts].to_i
+    @quiz_results = QuizResult.where(session_ts: @session_ts)
+    @category = Category.includes(:questions).find(@quiz_results.first.category_id)
   end
 
   private
