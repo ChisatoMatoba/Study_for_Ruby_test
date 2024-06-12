@@ -18,11 +18,11 @@
         <% @quiz_results.each do |result| %>
           <tr>
             <td><%= format_session_timestamp(result.session_ts) %></td>
-            <td><%= link_to result.category.name, results_by_session_categories_path(session_ts: result.session_ts), class: "btn btn-link btn-lg" %></td>
+            <td><%= link_to result.category.name, results_path(session_ts: result.session_ts), class: "btn btn-link btn-lg" %></td>
             <td><%= result.total_questions %></td>
             <td><%= result.correct_answers %></td>
             <td><%= (result.correct_answers.to_f / result.total_questions * 100).round(2) %>%</td>
-            <td><%= link_to '削除', user_result_path(current_user, session_ts: result.session_ts), data: { turbo_method: :delete, turbo_confirm: "結果を削除します。よろしいですか？"}, class: "btn btn-danger" %></td>
+            <td><%= link_to '削除', result_path(session_ts: result.session_ts), data: { turbo_method: :delete, turbo_confirm: "結果を削除します。よろしいですか？"}, class: "btn btn-danger" %></td>
           </tr>
         <% end %>
       </tbody>

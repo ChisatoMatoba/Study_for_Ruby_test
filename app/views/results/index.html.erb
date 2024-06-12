@@ -1,11 +1,13 @@
 <div class="container">
-  <h1>成績発表！！</h1>
+  <h1>成績</h1>
 
   <div class="content">
     <h5>カテゴリー: <%= @category.name %></h5>
     <h5>問題数: <%= @questions.count %></h5>
+    <h5>実施日時: <%= format_session_timestamp(@session_ts) %></h5>
+  </div>
 
-
+  <div class="content">
     <table class="table table-borderless table-hover">
       <thead>
         <tr>
@@ -23,13 +25,16 @@
               <%= result.is_correct ? "正解" : "不正解" %>
             </td>
             <td>
-              <%= link_to '問題と解説を見る', category_question_path(@category, result.question, show_solution: true), class: "btn btn-success" %>
+              <%= link_to '問題と解説を見る', result_path(result.question, session_ts: result.session_ts), class: "btn btn-success" %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
+  </div>
 
-      <%= link_to '←トップページに戻る', root_path, class: "btn  btn-outline-warning" %>
+  <div class="content">
+    <%= link_to '←マイページに戻る', user_path(current_user), class: "btn  btn-outline-warning" %><br>
+    <%= link_to '←トップページに戻る', root_path, class: "btn  btn-outline-warning" %>
   </div>
 </div>
