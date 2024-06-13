@@ -11,6 +11,16 @@ class Question < ApplicationRecord
     validates :number, uniqueness: { scope: :category_id }
   end
 
+  def session_result(selected_ids)
+    correct_choice_ids = choices.where(is_correct: true).pluck(:id)
+    is_correct = (selected_ids - correct_choice_ids).empty? && (correct_choice_ids - selected_ids).empty?
+    {
+      selected: selected_ids,
+      correct: correct_choice_ids,
+      is_correct: is_correct
+    }
+  end
+
   class << self
     def import(file, category, overwrite)
       CSV.foreach(file.path, headers: true) do |row|

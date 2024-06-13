@@ -7,12 +7,12 @@ class QuestionsController < ApplicationController
       overwrite = params[:overwrite] == '1'
       begin
         Question.import(params[:file], @category, overwrite)
-        redirect_to category_questions_path(@category), notice: '正常にインポートできました'
+        redirect_to category_path(@category), notice: '正常にインポートできました'
       rescue StandardError => e
-        redirect_to category_questions_path(@category), alert: e.message
+        redirect_to category_path(@category), alert: e.message
       end
     else
-      redirect_to category_questions_path(@category), alert: 'インポートに失敗しました'
+      redirect_to category_path(@category), alert: 'インポートに失敗しました'
     end
   end
 
@@ -24,21 +24,21 @@ class QuestionsController < ApplicationController
   def check_answer
     @question = Question.find(params[:question_id])
     selected_ids = params[:choice_ids].map(&:to_i)
-    correct_choice_ids = @question.choices.where(is_correct: true).pluck(:id)
-
-    is_correct = (params[:choice_ids].map(&:to_i) - correct_choice_ids).empty? && (correct_choice_ids - params[:choice_ids].map(&:to_i)).empty?
-    correct_choices = Choice.find(correct_choice_ids).map(&:content)
+    result = @question.session_result(selected_ids)
 
     # セッションに結果を保存
     session[:results] ||= {}
-    session[:results][@question.id] = {
-      selected: selected_ids,
-      correct: correct_choice_ids,
-      is_correct: is_correct
-    }
+    session[:results][@question.id] = result
 
+    correct_choices = @question.choices.where(is_correct: true).pluck(:content)
     respond_to do |format|
-      format.json { render json: { is_correct: is_correct, correct_choices: correct_choices, explanation: @question.explanation } }
+      format.json do
+        render json: {
+          is_correct: result[:is_correct],
+          correct_choices: correct_choices,
+          explanation: @question.explanation
+        }
+      end
     end
   end
 
