@@ -7,12 +7,12 @@ class QuestionsController < ApplicationController
       overwrite = params[:overwrite] == '1'
       begin
         Question.import(params[:file], @category, overwrite)
-        redirect_to category_questions_path(@category), notice: '正常にインポートできました'
+        redirect_to category_path(@category), notice: '正常にインポートできました'
       rescue StandardError => e
-        redirect_to category_questions_path(@category), alert: e.message
+        redirect_to category_path(@category), alert: e.message
       end
     else
-      redirect_to category_questions_path(@category), alert: 'インポートに失敗しました'
+      redirect_to category_path(@category), alert: 'インポートに失敗しました'
     end
   end
 
