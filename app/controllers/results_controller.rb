@@ -1,4 +1,6 @@
 class ResultsController < ApplicationController
+  before_action :authenticate_user!
+
   def create_quiz_results
     session_ts = Time.current.strftime('%Y%m%d%H%M%S').to_i
     @quiz_results = []
