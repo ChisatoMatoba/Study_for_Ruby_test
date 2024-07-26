@@ -42,6 +42,16 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def edit_explanation_content
+    question = Question.find(params[:question_id])
+    learned_content = params[:learned_content]
+    if question.update(explanation: learned_content)
+      render json: { success: true }
+    else
+      render json: { success: false }
+    end
+  end
+
   def next
     @question = Question.find(params[:id])
     question_ids = session[:question_ids]

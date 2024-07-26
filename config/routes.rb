@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :questions, only: :show do
       member do
         post :check_answer # 回答チェックアクション
+        post :edit_explanation_content # 解説編集アクション
         get :next # 次の問題への遷移アクション
       end
       collection { post :import } # CSVインポートアクション
