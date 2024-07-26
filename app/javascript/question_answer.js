@@ -4,6 +4,8 @@ document.addEventListener('turbo:load', function () {
   const submitButton = document.getElementById('submit_answers');
   const resultCard = document.getElementById('result_card');
   const resultDisplay = document.getElementById('result_display');
+  const editExplanationButton = document.getElementById('edit_explanation_button');
+  const editExplanation = document.getElementById('edit_explanation');
   const nextButton = document.getElementById('next_button');
   const body = document.querySelector('body');
   const categoryId = body.dataset.categoryId;
@@ -53,6 +55,9 @@ document.addEventListener('turbo:load', function () {
 
   // 結果を表示する
   function displayResult(data) {
+    submitButton.style.display = 'none';
+    resultCard.style.display = 'block';
+
     if (data.is_correct) {
       resultDisplay.textContent = '正解！！';
       resultDisplay.classList.add('bg-warning');
@@ -68,8 +73,44 @@ document.addEventListener('turbo:load', function () {
     document.getElementById('correct_answers').innerHTML = marked.parse('<b>正しい選択肢</b>' + markdownContent);
 
     document.getElementById('explanation').innerHTML = '<b>解説</b>' + data.explanation;
-    submitButton.style.display = 'none';
-    resultCard.style.display = 'block';
+    editExplanationButton.style.display = 'block'; // 解説を追記するボタンを表示
+
+    // サーバーに編集した解説を送信・再送信する
+    editExplanationButton.addEventListener('click', function() {
+      document.getElementById('explanation').style.display = 'none';
+      editExplanation.style.display = 'block';
+      editExplanationButton.style.display = 'none';
+      nextButton.style.display = 'none';
+    });
+
+    document.getElementById("save_learned_content").addEventListener("click", function() {
+      const learnedContent = document.getElementById("learned_content").value;
+      if (learnedContent.trim() !== "") {
+        // サーバーに学んだことを送信
+        fetch(`/categories/${categoryId}/questions/${questionId}/edit_explanation_content`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            question_id: questionId,
+            learned_content: learnedContent
+          })
+        }).then(response => response.json()).then(data => {
+          if (data.success) {
+            alert("解説が更新されました");
+            document.getElementById('explanation').innerHTML = '<b>解説</b>' + learnedContent;
+            document.getElementById('explanation').style.display = 'block';
+            editExplanation.style.display = 'none';
+            editExplanationButton.style.display = 'none';
+            nextButton.style.display = 'block';
+          } else {
+            alert("保存に失敗しました");
+          }
+        });
+      }
+    });
   }
 
   // 次の問題へ移動する
