@@ -134,6 +134,7 @@ document.addEventListener('turbo:load', function () {
         alert("解説が更新されました");
         document.getElementById('explanation').innerHTML = '<b>解説</b>' + content;
         toggleExplanationEdit(false); // 解説編集モードを解除
+        editExplanationButton.style.display = 'block'; // 編集ボタンを再度表示
       } else {
         alert("保存に失敗しました");
       }
