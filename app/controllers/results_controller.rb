@@ -13,6 +13,11 @@ class ResultsController < ApplicationController
     @quiz_results = QuizResult.where(session_ts: @session_ts)
     @category = Category.includes(:questions).find(@quiz_results.first.category_id)
     @questions = @category.questions
+
+    # 正答率
+    correct_answers_count = @quiz_results.where(is_correct: true).count
+    total_questions_count = @quiz_results.count
+    @accuracy_rate = (correct_answers_count.to_f / total_questions_count * 100).round(2)
   end
 
   def show
