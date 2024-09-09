@@ -4,6 +4,8 @@ document.addEventListener('turbo:load', function () {
   const submitButton = document.getElementById('submit_answers');
   const resultCard = document.getElementById('result_card');
   const resultDisplay = document.getElementById('result_display');
+  const editExplanationButton = document.getElementById('edit_explanation_button');
+  const editExplanation = document.getElementById('edit_explanation');
   const nextButton = document.getElementById('next_button');
   const body = document.querySelector('body');
   const categoryId = body.dataset.categoryId;
@@ -53,7 +55,22 @@ document.addEventListener('turbo:load', function () {
 
   // 結果を表示する
   function displayResult(data) {
-    if (data.is_correct) {
+    toggleResultCard(true); // 結果カードを表示、回答ボタンを非表示
+    updateResultDisplay(data.is_correct); // 正解かどうかを表示
+    updateCorrectAnswers(data.correct_choices); // 正しい選択肢を表示
+    updateExplanation(data.explanation); // 解説を表示
+    setupEditExplanationButton(); // 解説編集ボタンを表示
+  }
+
+  // 結果カードを表示/非表示にする
+  function toggleResultCard(show) {
+    submitButton.style.display = show ? 'none' : 'block';
+    resultCard.style.display = show ? 'block' : 'none';
+  }
+
+  // 正解かどうかを表示する
+  function updateResultDisplay(isCorrect) {
+    if (isCorrect) {
       resultDisplay.textContent = '正解！！';
       resultDisplay.classList.add('bg-warning');
       resultDisplay.classList.remove('bg-danger');
@@ -63,13 +80,65 @@ document.addEventListener('turbo:load', function () {
       resultDisplay.classList.remove('bg-warning');
     }
     resultDisplay.classList.add('animated');
+  }
 
-    const markdownContent = '\n' + data.correct_choices.map(choice => `- ${choice}`).join('\n');
+  // 正しい選択肢を表示する
+  function updateCorrectAnswers(correctChoices) {
+    const markdownContent = '\n' + correctChoices.map(choice => `- ${choice}`).join('\n');
     document.getElementById('correct_answers').innerHTML = marked.parse('<b>正しい選択肢</b>' + markdownContent);
+  }
 
-    document.getElementById('explanation').innerHTML = '<b>解説</b>' + data.explanation;
-    submitButton.style.display = 'none';
-    resultCard.style.display = 'block';
+  // 解説を表示する
+  function updateExplanation(explanation) {
+    document.getElementById('explanation').innerHTML = '<b>解説</b>' + explanation;
+    editExplanationButton.style.display = 'block';
+    document.getElementById('learned_content').value = explanation;
+  }
+
+  // 解説編集ボタンを表示する
+  function setupEditExplanationButton() {
+    editExplanationButton.addEventListener('click', function() {
+      toggleExplanationEdit(true); // 解説編集モードの表示
+    });
+
+    document.getElementById("save_learned_content").addEventListener("click", function() {
+      const learnedContent = document.getElementById("learned_content").value;
+      if (learnedContent.trim() !== "") {
+        saveExplanationContent(learnedContent);
+      }
+    });
+  }
+
+  // 解説編集モードの切り替え
+  function toggleExplanationEdit(editMode) {
+    document.getElementById('explanation').style.display = editMode ? 'none' : 'block';
+    editExplanation.style.display = editMode ? 'block' : 'none';
+    editExplanationButton.style.display = editMode ? 'none' : 'block';
+    nextButton.style.display = editMode ? 'none' : 'block';
+  }
+
+  // 解説をサーバーに保存する
+  function saveExplanationContent(content) {
+    fetch(`/categories/${categoryId}/questions/${questionId}/edit_explanation_content`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        question_id: questionId,
+        learned_content: content
+      })
+    }).then(response => response.json()).then(data => {
+      if (data.success) {
+        alert("解説が更新されました");
+        document.getElementById('explanation').innerHTML = '<b>解説</b>' + content;
+        toggleExplanationEdit(false); // 解説編集モードを解除
+        editExplanationButton.style.display = 'block'; // 編集ボタンを再度表示
+      } else {
+        alert("保存に失敗しました");
+      }
+    });
   }
 
   // 次の問題へ移動する

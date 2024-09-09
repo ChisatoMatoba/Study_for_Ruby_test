@@ -11,7 +11,7 @@
           <% end %>
         </ul>
       </div>
-      
+
       <div class="card border-light mb-3">
         <h5><div id="selected_choices" class="text-center"></div></h5>
         <button id="submit_answers" class="btn btn-outline-success">回答</button>
@@ -22,6 +22,13 @@
       <div id="result_display" class="card fs-3 text-center"></div>
       <div id="correct_answers" class="card bg-warning bg-opacity-10"></div>
       <div id="explanation" class="card bg-info bg-opacity-10 mb-3"></div>
+      <button id="edit_explanation_button" class="btn btn-outline-primary">解説を編集する</button>
+
+      <div id="edit_explanation" class="mt-3" style="display:none;">
+        <textarea id="learned_content" class="form-control mb-2" rows="3"></textarea>
+        <button id="save_learned_content" class="btn btn-outline-primary">追記完了</button>
+      </div>
+
       <button id="next_button" class="btn btn-primary">次へ</button>
     </div>
   </div>
