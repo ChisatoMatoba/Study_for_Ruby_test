@@ -1,7 +1,10 @@
 <body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-next-question-url="<%= next_category_question_path(@question.category, @question) %>">
   <div class="container">
     <div class="content">
-      <h3>問題 <%= @question.number %> :</h3>
+      <div class="d-flex justify-content-start align-items-center">
+        <h3>問題 <%= @question.number %></h3>
+        <h5 class="text-secondary ms-2">(<%= @current_question_number %> / <%= @total_questions %>)</h5>
+      </div>
 
       <%= markdown(@question.content) %>
       <div class="card mb-3">
