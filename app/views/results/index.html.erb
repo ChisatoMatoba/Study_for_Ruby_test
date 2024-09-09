@@ -4,6 +4,7 @@
   <div class="content">
     <h5>カテゴリー: <%= @category.name %></h5>
     <h5>問題数: <%= @questions.count %></h5>
+    <h5>正答率: <%= @accuracy_rate %> %</h5>
     <h5>実施日時: <%= format_session_timestamp(@session_ts) %></h5>
   </div>
 
@@ -22,7 +23,11 @@
             <td><%= result.question.number %>
             </td>
             <td>
-              <%= result.is_correct ? "正解" : "不正解" %>
+              <% if result.is_correct %>
+                <span>正解</span>
+              <% else %>
+                <span class="text-danger">不正解</span>
+              <% end %>
             </td>
             <td>
               <%= link_to '問題と解説を見る', result_path(result.question, session_ts: result.session_ts), class: "btn btn-success" %>
