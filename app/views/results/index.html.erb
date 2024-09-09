@@ -20,9 +20,10 @@
       <tbody>
         <% @quiz_results.each do |result| %>
           <tr>
-            <td><%= result.question.number %>
+            <td class="align-middle">
+              <%= result.question.number %>
             </td>
-            <td>
+            <td class="align-middle">
               <% if result.is_correct %>
                 <span>正解</span>
               <% else %>
