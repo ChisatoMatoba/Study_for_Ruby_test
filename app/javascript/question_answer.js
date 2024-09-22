@@ -1,11 +1,11 @@
+import { setupMemoEditor } from './memo_editor'; // memo_editor.js を読み込む
+
 document.addEventListener('turbo:load', function () {
   const choices = document.querySelectorAll('.choice');
   const selectedChoices = document.getElementById('selected_choices');
   const submitButton = document.getElementById('submit_answers');
   const resultCard = document.getElementById('result_card');
   const resultDisplay = document.getElementById('result_display');
-  const editMemoButton = document.getElementById('edit_memo_button');
-  const editMemo = document.getElementById('edit_memo');
   const nextButton = document.getElementById('next_button');
   const quitButton = document.getElementById('quit_button');
   const body = document.querySelector('body');
@@ -60,8 +60,7 @@ document.addEventListener('turbo:load', function () {
     updateResultDisplay(data.is_correct); // 正解かどうかを表示
     updateCorrectAnswers(data.correct_choices); // 正しい選択肢を表示
     updateExplanation(data.explanation); // 解説を表示
-    updateMemo(data.memo); // メモを表示
-    setupEditMemoButton(); // メモ編集ボタンを表示
+    setupMemoEditor({ categoryId, questionId, memo: data.memo }); // メモ表示と編集をセットアップ
   }
 
   // 結果カードを表示/非表示にする
@@ -93,59 +92,6 @@ document.addEventListener('turbo:load', function () {
   // 解説を表示する
   function updateExplanation(explanation) {
     document.getElementById('explanation').innerHTML = '<b>解説</b>' + explanation;
-    editMemoButton.style.display = 'block';
-  }
-
-  // メモを表示する
-  function updateMemo(memo) {
-    const memoContent = memo ? memo : '';
-    document.getElementById('memo').innerHTML = '<b>メモ</b>' + (memoContent || 'メモはありません');
-    editMemoButton.style.display = 'block';
-    document.getElementById('memo_content').value = memoContent;
-  }
-
-  // メモ編集ボタンを表示する
-  function setupEditMemoButton() {
-    editMemoButton.addEventListener('click', function() {
-      toggleMemoEdit(true); // メモ編集モードの表示
-    });
-
-    document.getElementById("save_memo_content").addEventListener("click", function() {
-      const memoContent = document.getElementById("memo_content").value;
-      saveMemoContent(memoContent);
-    });
-  }
-
-  // メモ編集モードの切り替え
-  function toggleMemoEdit(editMode) {
-    document.getElementById('memo').style.display = editMode ? 'none' : 'block';
-    editMemo.style.display = editMode ? 'block' : 'none';
-    editMemoButton.style.display = editMode ? 'none' : 'block';
-    nextButton.style.display = editMode ? 'none' : 'block';
-    quitButton.style.display = editMode ? 'none' : 'block';
-  }
-
-  // メモをサーバーに保存する
-  function saveMemoContent(content) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/edit_memo_content`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({
-        question_id: questionId,
-        memo_content: content || ""
-      })
-    }).then(response => response.json()).then(data => {
-      if (data.success) {
-        document.getElementById('memo').innerHTML = '<b>メモ</b><br>' + (content || 'メモはありません');
-        toggleMemoEdit(false); // メモ編集モードを解除
-        editMemoButton.style.display = 'block'; // メモ編集ボタンを再度表示
-      } else {
-        alert("保存に失敗しました");
-      }
-    });
   }
 
   // 次の問題へ移動する
