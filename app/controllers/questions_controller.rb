@@ -41,16 +41,17 @@ class QuestionsController < ApplicationController
         render json: {
           is_correct: result[:is_correct],
           correct_choices: correct_choices,
-          explanation: @question.explanation
+          explanation: @question.explanation,
+          memo: @question.memo
         }
       end
     end
   end
 
-  def edit_explanation_content
+  def edit_memo_content
     question = Question.find(params[:question_id])
-    learned_content = params[:learned_content]
-    if question.update(explanation: learned_content)
+    memo_content = params[:memo_content].presence || '' # 空の場合でも''として保存
+    if question.update(memo: memo_content)
       render json: { success: true }
     else
       render json: { success: false }

@@ -1,30 +1,39 @@
-<div class="container">
-  <div class="content">
-    <h3>問題 <%= @question.number %> :</h3>
+<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-memo="<%= @question.memo %>">
+  <div class="container">
+    <div class="content">
+      <h3>問題 <%= @question.number %> :</h3>
 
-    <%= markdown(@question.content) %>
-    <div class="card mb-3">
-      <ul id="choices" class="list-group list-group-flush">
-        <% @choices.each_with_index do |choice, i| %>
-          <li class="choice list-group-item" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
-        <% end %>
-      </ul>
+      <%= markdown(@question.content) %>
+      <div class="card mb-3">
+        <ul id="choices" class="list-group list-group-flush">
+          <% @choices.each_with_index do |choice, i| %>
+            <li class="choice list-group-item" data-choice-id="<%= choice.id %>"><%= i + 1 %> : <%= markdown(choice.content) %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <div class="card bg-warning bg-opacity-10 mb-3">
-    <ul>
-      <li class="mt-3">正しい選択肢:</li>
+    <div class="card bg-warning bg-opacity-10">
+      <p><b>正しい選択肢</b></p>
       <% @question.choices.where(is_correct: true).each do |choice| %>
-        <li><%= markdown(choice.content) %></li>
+        <%= markdown(choice.content) %>
       <% end %>
-    </ul>
+    </div>
+    <div class="card bg-warning bg-opacity-10 mb-3">
+      <p><b>解説</b></p>
+      <%= @question.explanation %>
+    </div>
+
+    <div>
+      <div id="memo" class="card bg-info bg-opacity-10"></div>
+      <button id="edit_memo_button" class="btn btn-outline-primary mb-3">メモを編集する</button>
+
+      <div id="edit_memo" class="mt-3" style="display:none;">
+        <textarea id="memo_content" class="form-control mb-2" rows="3"></textarea>
+        <button id="save_memo_content" class="btn btn-outline-primary">メモ編集完了</button>
+      </div>
+    </div>
+
+    <%= link_to '←結果ページに戻る', results_path(@question.category, session_ts: @session_ts), class: "btn  btn-outline-warning" %>
   </div>
-  <div class="card bg-info bg-opacity-10 mb-3">
-    <ul>
-      <li class="mt-3">解説:</li>
-      <li><%= @question.explanation %></li>
-    </ul>
-  </div>
-  <%= link_to '←結果ページに戻る', results_path(@question.category, session_ts: @session_ts), class: "btn  btn-outline-warning" %>
-</div>
+</body>
