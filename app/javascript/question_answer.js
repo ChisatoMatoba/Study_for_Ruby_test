@@ -4,8 +4,8 @@ document.addEventListener('turbo:load', function () {
   const submitButton = document.getElementById('submit_answers');
   const resultCard = document.getElementById('result_card');
   const resultDisplay = document.getElementById('result_display');
-  const editExplanationButton = document.getElementById('edit_explanation_button');
-  const editExplanation = document.getElementById('edit_explanation');
+  const editMemoButton = document.getElementById('edit_memo_button');
+  const editMemo = document.getElementById('edit_memo');
   const nextButton = document.getElementById('next_button');
   const quitButton = document.getElementById('quit_button');
   const body = document.querySelector('body');
@@ -60,7 +60,7 @@ document.addEventListener('turbo:load', function () {
     updateResultDisplay(data.is_correct); // 正解かどうかを表示
     updateCorrectAnswers(data.correct_choices); // 正しい選択肢を表示
     updateExplanation(data.explanation); // 解説を表示
-    setupEditExplanationButton(); // 解説編集ボタンを表示
+    setupEditMemoButton(); // 解説編集ボタンを表示
   }
 
   // 結果カードを表示/非表示にする
@@ -92,13 +92,13 @@ document.addEventListener('turbo:load', function () {
   // 解説を表示する
   function updateExplanation(explanation) {
     document.getElementById('explanation').innerHTML = '<b>解説</b>' + explanation;
-    editExplanationButton.style.display = 'block';
+    editMemoButton.style.display = 'block';
     document.getElementById('learned_content').value = explanation;
   }
 
   // 解説編集ボタンを表示する
-  function setupEditExplanationButton() {
-    editExplanationButton.addEventListener('click', function() {
+  function setupEditMemoButton() {
+    editMemoButton.addEventListener('click', function() {
       toggleExplanationEdit(true); // 解説編集モードの表示
     });
 
@@ -113,8 +113,8 @@ document.addEventListener('turbo:load', function () {
   // 解説編集モードの切り替え
   function toggleExplanationEdit(editMode) {
     document.getElementById('explanation').style.display = editMode ? 'none' : 'block';
-    editExplanation.style.display = editMode ? 'block' : 'none';
-    editExplanationButton.style.display = editMode ? 'none' : 'block';
+    editMemo.style.display = editMode ? 'block' : 'none';
+    editMemoButton.style.display = editMode ? 'none' : 'block';
     nextButton.style.display = editMode ? 'none' : 'block';
     quitButton.style.display = editMode ? 'none' : 'block';
   }
@@ -136,7 +136,7 @@ document.addEventListener('turbo:load', function () {
         alert("解説が更新されました");
         document.getElementById('explanation').innerHTML = '<b>解説</b>' + content;
         toggleExplanationEdit(false); // 解説編集モードを解除
-        editExplanationButton.style.display = 'block'; // 編集ボタンを再度表示
+        editMemoButton.style.display = 'block'; // 編集ボタンを再度表示
       } else {
         alert("保存に失敗しました");
       }
