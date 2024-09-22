@@ -22,7 +22,7 @@
             <td><%= link_to category.name, category_path(category), class: "btn btn-link btn-lg" %></td>
             <td><%= category.questions.count %></td>
             <td><%= category.created_at.strftime("%Y/%m/%d") %></td>
-            <td><%= category.updated_at.strftime("%Y/%m/%d") %></td>
+            <td><%= category.questions.maximum(:updated_at).strftime("%Y/%m/%d") %></td>
             <td><%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "カテゴリー全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
           </tr>
         <% end %>
