@@ -60,7 +60,8 @@ document.addEventListener('turbo:load', function () {
     updateResultDisplay(data.is_correct); // 正解かどうかを表示
     updateCorrectAnswers(data.correct_choices); // 正しい選択肢を表示
     updateExplanation(data.explanation); // 解説を表示
-    setupEditMemoButton(); // 解説編集ボタンを表示
+    updateMemo(data.memo); // メモを表示
+    setupEditMemoButton(); // メモ編集ボタンを表示
   }
 
   // 結果カードを表示/非表示にする
@@ -93,35 +94,40 @@ document.addEventListener('turbo:load', function () {
   function updateExplanation(explanation) {
     document.getElementById('explanation').innerHTML = '<b>解説</b>' + explanation;
     editMemoButton.style.display = 'block';
-    document.getElementById('learned_content').value = explanation;
   }
 
-  // 解説編集ボタンを表示する
+  // メモを表示する
+  function updateMemo(memo) {
+    const memoContent = memo ? memo : '';
+    document.getElementById('memo').innerHTML = '<b>メモ</b>' + (memoContent || 'メモはありません');
+    editMemoButton.style.display = 'block';
+    document.getElementById('memo_content').value = memoContent;
+  }
+
+  // メモ編集ボタンを表示する
   function setupEditMemoButton() {
     editMemoButton.addEventListener('click', function() {
-      toggleExplanationEdit(true); // 解説編集モードの表示
+      toggleMemoEdit(true); // メモ編集モードの表示
     });
 
-    document.getElementById("save_learned_content").addEventListener("click", function() {
-      const learnedContent = document.getElementById("learned_content").value;
-      if (learnedContent.trim() !== "") {
-        saveExplanationContent(learnedContent);
-      }
+    document.getElementById("save_memo_content").addEventListener("click", function() {
+      const memoContent = document.getElementById("memo_content").value;
+      saveMemoContent(memoContent);
     });
   }
 
-  // 解説編集モードの切り替え
-  function toggleExplanationEdit(editMode) {
-    document.getElementById('explanation').style.display = editMode ? 'none' : 'block';
+  // メモ編集モードの切り替え
+  function toggleMemoEdit(editMode) {
+    document.getElementById('memo').style.display = editMode ? 'none' : 'block';
     editMemo.style.display = editMode ? 'block' : 'none';
     editMemoButton.style.display = editMode ? 'none' : 'block';
     nextButton.style.display = editMode ? 'none' : 'block';
     quitButton.style.display = editMode ? 'none' : 'block';
   }
 
-  // 解説をサーバーに保存する
-  function saveExplanationContent(content) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/edit_explanation_content`, {
+  // メモをサーバーに保存する
+  function saveMemoContent(content) {
+    fetch(`/categories/${categoryId}/questions/${questionId}/edit_memo_content`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -129,14 +135,13 @@ document.addEventListener('turbo:load', function () {
       },
       body: JSON.stringify({
         question_id: questionId,
-        learned_content: content
+        memo_content: content || ""
       })
     }).then(response => response.json()).then(data => {
       if (data.success) {
-        alert("解説が更新されました");
-        document.getElementById('explanation').innerHTML = '<b>解説</b>' + content;
-        toggleExplanationEdit(false); // 解説編集モードを解除
-        editMemoButton.style.display = 'block'; // 編集ボタンを再度表示
+        document.getElementById('memo').innerHTML = '<b>メモ</b><br>' + (content || 'メモはありません');
+        toggleMemoEdit(false); // メモ編集モードを解除
+        editMemoButton.style.display = 'block'; // メモ編集ボタンを再度表示
       } else {
         alert("保存に失敗しました");
       }
