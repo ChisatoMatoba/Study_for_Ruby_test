@@ -7,6 +7,7 @@ document.addEventListener('turbo:load', function () {
   const editExplanationButton = document.getElementById('edit_explanation_button');
   const editExplanation = document.getElementById('edit_explanation');
   const nextButton = document.getElementById('next_button');
+  const quitButton = document.getElementById('quit_button');
   const body = document.querySelector('body');
   const categoryId = body.dataset.categoryId;
   const questionId = body.dataset.questionId;
@@ -115,6 +116,7 @@ document.addEventListener('turbo:load', function () {
     editExplanation.style.display = editMode ? 'block' : 'none';
     editExplanationButton.style.display = editMode ? 'none' : 'block';
     nextButton.style.display = editMode ? 'none' : 'block';
+    quitButton.style.display = editMode ? 'none' : 'block';
   }
 
   // 解説をサーバーに保存する
@@ -146,6 +148,17 @@ document.addEventListener('turbo:load', function () {
     nextButton.addEventListener('click', function() {
       const nextQuestionUrl = body.dataset.nextQuestionUrl;
       window.location.href = nextQuestionUrl;
+    });
+  }
+
+  // 中断して結果ページに移動する
+  if (quitButton) {
+    quitButton.addEventListener('click', function() {
+      const confirmation = confirm('途中でテストを終了します。続きから始めることは出来ません。よろしいですか？');
+      if (confirmation) {
+        // 確認が「はい」なら結果ページにリダイレクト
+        window.location.href = '/results/create_quiz';
+      }
     });
   }
 });
