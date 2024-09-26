@@ -8,8 +8,9 @@ export function setupMemoEditor({ categoryId, questionId, memo }) {
 
   // メモを表示
   const memoContent = memo ? memo : '';
-  memoDisplay.innerHTML = '<b>メモ</b>' + (memoContent || 'メモはありません');
-  document.getElementById('memo_content').value = memoContent;
+  const formattedContent = memoContent.replace(/\n/g, "<br>"); // 改行を <br> に変換
+  memoDisplay.innerHTML = '<b>メモ</b>' + (formattedContent || 'メモはありません');
+  document.getElementById('memo_content').value = formattedContent;
 
   // メモ編集ボタンを表示
   if (editMemoButton) {
@@ -49,7 +50,8 @@ export function setupMemoEditor({ categoryId, questionId, memo }) {
       })
     }).then(response => response.json()).then(data => {
       if (data.success) {
-        memoDisplay.innerHTML = '<b>メモ</b><br>' + (content || 'メモはありません');
+        const formattedContent = content.replace(/\n/g, "<br>"); // 改行を <br> に変換
+        memoDisplay.innerHTML = '<b>メモ</b><br>' + (formattedContent || 'メモはありません');
         toggleMemoEdit(false); // メモ編集モードを非表示にする
         editMemoButton.style.display = 'block';
       } else {
