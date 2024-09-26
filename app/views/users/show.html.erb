@@ -28,4 +28,25 @@
       </tbody>
     </table>
   </div>
+
+
+  <div class="content">
+    <h3>メモ一覧</h3>
+    <div id="memo_list">
+      <% @questions_with_memos.each_with_index do |question, index| %>
+        <div class="card bg-info bg-opacity-10 mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5>問題 <%= question.number %> - カテゴリ: <%= question.category.name %></h5>
+              <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#memo-<%= index %>" aria-expanded="true" aria-controls="memo-<%= index %>">
+                メモを表示/非表示
+              </button>
+              <%= link_to 'メモ削除', delete_memo_category_question_path(question.category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
+            </div>
+            <div><%= simple_format(question.memo) %></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

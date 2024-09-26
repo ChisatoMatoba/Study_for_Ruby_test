@@ -58,6 +58,15 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def delete_memo
+    @question = Question.find(params[:id])
+    if @question.update(memo: nil)
+      redirect_to user_path(current_user), notice: 'メモが正常に削除されました。'
+    else
+      redirect_to user_path(current_user), alert: 'メモの削除に失敗しました。'
+    end
+  end
+
   def next
     @question = Question.find(params[:id])
     question_ids = session[:question_ids]

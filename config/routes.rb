@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         post :check_answer # 回答チェックアクション
         post :edit_memo_content # メモ編集アクション
         get :next # 次の問題への遷移アクション
+        delete :delete_memo, to: 'questions#delete_memo', as: :delete_memo # メモ削除アクション
       end
       collection { post :import } # CSVインポートアクション
     end
