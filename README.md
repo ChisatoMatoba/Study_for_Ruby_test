@@ -6,6 +6,7 @@
   - Ruby Silver
     - 基礎力確認問題（30問）
     - 模擬試験（50問）
+    - [公式の模擬試験（50問）](https://github.com/ruby-association/prep-test/blob/version3/silver_ja.md)
 
 ## 使い方
 ### 1. ユーザー登録
