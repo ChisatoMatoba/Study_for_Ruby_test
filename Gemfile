@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '3.3.0'
 
+gem 'activerecord-session_store' # session_storeをActiveRecordに変更
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.3.2'
 gem 'devise'
