@@ -45,9 +45,9 @@ class ResultsController < ApplicationController
         user_id: current_user.id,
         category_id: Category.find(Question.find(question_id).category_id).id,
         question_id: question_id,
-        selected: result['selected'],
-        correct: result['correct'],
-        is_correct: result['is_correct'],
+        selected: result[:selected],
+        correct: result[:correct],
+        is_correct: result[:is_correct],
         session_ts: session_ts
       )
       quiz_results << quiz_result
