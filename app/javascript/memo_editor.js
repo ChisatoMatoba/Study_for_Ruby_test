@@ -38,8 +38,8 @@ export function setupMemoEditor({ categoryId, questionId, memo }) {
 
   // メモをサーバーに保存する
   function saveMemoContent(content) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/edit_memo_content`, {
-      method: 'POST',
+    fetch(`/categories/${categoryId}/questions/${questionId}/memo`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content

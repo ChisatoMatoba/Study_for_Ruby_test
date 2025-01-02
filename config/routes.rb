@@ -3,19 +3,19 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :categories do
-    member do
-      get :start_quiz # クイズ開始アクション
-    end
 
     resources :questions, only: :show do
+      resources :check_answers, only: :create # 回答チェック
+      resource :memo, only: [:update, :destroy] # メモ機能
+
       member do
-        post :check_answer # 回答チェックアクション
-        post :edit_memo_content # メモ編集アクション
         get :next # 次の問題への遷移アクション
-        delete :delete_memo, to: 'questions#delete_memo', as: :delete_memo # メモ削除アクション
       end
-      collection { post :import } # CSVインポートアクション
     end
+
+    resources :csv_imports, only: :create # CSVインポート
+
+    post 'start_quiz', to: 'quiz#create', as: :start_quiz # クイズ開始アクション
   end
 
   resources :results, only: %i(index show destroy) do

@@ -17,8 +17,8 @@
       <tbody>
         <% @categories.each do |category| %>
           <tr>
-            <td><%= link_to '1番から解く', start_quiz_category_path(category, random: false), class: "btn btn-success" %></td>
-            <td><%= link_to 'ランダムで解く', start_quiz_category_path(category, random: true), class: "btn btn-success" %></td>
+            <td><%= button_to '1番から解く', category_start_quiz_path(category, random: false), method: :post, class: "btn btn-success" %></td>
+            <td><%= button_to 'ランダムで解く', category_start_quiz_path(category, random: true), method: :post, class: "btn btn-success" %></td>
             <td><%= link_to category.name, category_path(category), class: "btn btn-link btn-lg" %></td>
             <td><%= category.questions.count %></td>
             <td><%= category.created_at.strftime("%Y/%m/%d") %></td>

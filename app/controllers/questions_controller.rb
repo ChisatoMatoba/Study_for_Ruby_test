@@ -1,21 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!
 
-  def import
-    @category = Category.find_by(id: params[:category_id])
-    if params[:file].present?
-      overwrite = params[:overwrite] == '1'
-      begin
-        Question.import(params[:file], @category, overwrite)
-        redirect_to category_path(@category), notice: '正常にインポートできました'
-      rescue StandardError => e
-        redirect_to category_path(@category), alert: e.message
-      end
-    else
-      redirect_to category_path(@category), alert: 'インポートに失敗しました'
-    end
-  end
-
   def show
     @question = Question.find(params[:id])
     @choices = @question.choices
@@ -24,47 +9,6 @@ class QuestionsController < ApplicationController
     question_ids = session[:question_ids]
     @current_question_number = question_ids.index(@question.id) + 1
     @total_questions = question_ids.count
-  end
-
-  def check_answer
-    @question = Question.find(params[:question_id])
-    selected_ids = params[:choice_ids].map(&:to_i)
-    result = @question.session_result(selected_ids)
-
-    # セッションに結果を保存
-    session[:results] ||= {}
-    session[:results][@question.id] = result
-
-    correct_choices = @question.choices.where(is_correct: true).pluck(:content)
-    respond_to do |format|
-      format.json do
-        render json: {
-          is_correct: result[:is_correct],
-          correct_choices: correct_choices,
-          explanation: @question.explanation,
-          memo: @question.memo
-        }
-      end
-    end
-  end
-
-  def edit_memo_content
-    question = Question.find(params[:question_id])
-    memo_content = params[:memo_content].presence || '' # 空の場合でも''として保存
-    if question.update(memo: memo_content)
-      render json: { success: true }
-    else
-      render json: { success: false }
-    end
-  end
-
-  def delete_memo
-    @question = Question.find(params[:id])
-    if @question.update(memo: nil)
-      redirect_to user_path(current_user), notice: 'メモが正常に削除されました。'
-    else
-      redirect_to user_path(current_user), alert: 'メモの削除に失敗しました。'
-    end
   end
 
   def next
