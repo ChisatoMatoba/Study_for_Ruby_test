@@ -7,7 +7,7 @@
     <h2>問題登録</h2>
     <div class="container card mb-3">
       <p>CSVファイルアップロードにより登録します。csvの記載ルールは<a href="/csv_upload_guidelines" type="button" class="btn btn-link">こちら</a></p>
-      <%= form_with url: import_category_questions_path(@category), local: true, multipart: true do %>
+      <%= form_with url: category_csv_imports_path(@category), local: true, multipart: true do %>
         <div class="form-group mb-3">
           <%= file_field_tag :file %>
         </div>
