@@ -41,7 +41,7 @@
               <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#memo-<%= index %>" aria-expanded="true" aria-controls="memo-<%= index %>">
                 メモを表示/非表示
               </button>
-              <%= link_to 'メモ削除', delete_memo_category_question_path(question.category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
+              <%= link_to 'メモ削除', category_question_memo_path(question.category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
             </div>
             <div id="memo-<%= index %>" class="collapse show mt-3">
               <div><%= simple_format(question.memo) %></div>

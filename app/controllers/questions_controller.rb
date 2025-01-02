@@ -11,25 +11,6 @@ class QuestionsController < ApplicationController
     @total_questions = question_ids.count
   end
 
-  def edit_memo_content
-    question = Question.find(params[:question_id])
-    memo_content = params[:memo_content].presence || '' # 空の場合でも''として保存
-    if question.update(memo: memo_content)
-      render json: { success: true }
-    else
-      render json: { success: false }
-    end
-  end
-
-  def delete_memo
-    @question = Question.find(params[:id])
-    if @question.update(memo: nil)
-      redirect_to user_path(current_user), notice: 'メモが正常に削除されました。'
-    else
-      redirect_to user_path(current_user), alert: 'メモの削除に失敗しました。'
-    end
-  end
-
   def next
     @question = Question.find(params[:id])
     question_ids = session[:question_ids]

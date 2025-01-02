@@ -6,11 +6,10 @@ Rails.application.routes.draw do
 
     resources :questions, only: :show do
       resources :check_answers, only: :create # 回答チェック
+      resource :memo, only: [:update, :destroy] # メモ機能
 
       member do
-        post :edit_memo_content # メモ編集アクション
         get :next # 次の問題への遷移アクション
-        delete :delete_memo, to: 'questions#delete_memo', as: :delete_memo # メモ削除アクション
       end
     end
 
