@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   resources :categories do
 
     resources :questions, only: :show do
+      resources :check_answers, only: :create # 回答チェック
+
       member do
-        post :check_answer # 回答チェックアクション
         post :edit_memo_content # メモ編集アクション
         get :next # 次の問題への遷移アクション
         delete :delete_memo, to: 'questions#delete_memo', as: :delete_memo # メモ削除アクション

@@ -39,7 +39,7 @@ document.addEventListener('turbo:load', function () {
 
   // サーバーに選択肢のIDを送信して正解判定を受け取る
   function sendAnswer(selectedIds) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/check_answer`, {
+    fetch(`/categories/${categoryId}/questions/${questionId}/check_answers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

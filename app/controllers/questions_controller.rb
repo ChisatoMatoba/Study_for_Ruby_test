@@ -11,28 +11,6 @@ class QuestionsController < ApplicationController
     @total_questions = question_ids.count
   end
 
-  def check_answer
-    @question = Question.find(params[:question_id])
-    selected_ids = params[:choice_ids].map(&:to_i)
-    result = @question.session_result(selected_ids)
-
-    # セッションに結果を保存
-    session[:results] ||= {}
-    session[:results][@question.id] = result
-
-    correct_choices = @question.choices.where(is_correct: true).pluck(:content)
-    respond_to do |format|
-      format.json do
-        render json: {
-          is_correct: result[:is_correct],
-          correct_choices: correct_choices,
-          explanation: @question.explanation,
-          memo: @question.memo
-        }
-      end
-    end
-  end
-
   def edit_memo_content
     question = Question.find(params[:question_id])
     memo_content = params[:memo_content].presence || '' # 空の場合でも''として保存
