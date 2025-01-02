@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :categories do
-    member do
-      get :start_quiz # クイズ開始アクション
-    end
+    post 'start_quiz', to: 'quiz#create', as: :start_quiz # クイズ開始アクション
 
     resources :questions, only: :show do
       member do
