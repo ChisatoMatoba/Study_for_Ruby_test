@@ -28,14 +28,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_02_080439) do
 
   create_table "memos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "category_id", null: false
     t.bigint "question_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_memos_on_category_id"
     t.index ["question_id"], name: "index_memos_on_question_id"
-    t.index ["user_id", "category_id", "question_id"], name: "index_memos_on_user_category_question", unique: true
+    t.index ["user_id", "question_id"], name: "index_memos_on_user_question", unique: true
     t.index ["user_id"], name: "index_memos_on_user_id"
   end
 
@@ -88,7 +86,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_02_080439) do
   end
 
   add_foreign_key "choices", "questions"
-  add_foreign_key "memos", "categories"
   add_foreign_key "memos", "questions"
   add_foreign_key "memos", "users"
   add_foreign_key "questions", "categories"
