@@ -15,7 +15,7 @@ document.addEventListener('turbo:load', function () {
   // 選択肢をクリックしたときに選択状態を切り替える
   choices.forEach(choice => {
     choice.addEventListener('click', function () {
-      this.classList.toggle('selected');
+      choice.classList.toggle('selected');
       updateSelectedChoices();
     });
   });
