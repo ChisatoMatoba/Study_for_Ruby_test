@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   belongs_to :category
   has_many :choices, dependent: :destroy
   has_many :quiz_results, dependent: :destroy
+  has_many :memos, dependent: :destroy
 
   with_options presence: true do
     validates :category_id
