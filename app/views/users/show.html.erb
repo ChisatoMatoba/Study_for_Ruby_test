@@ -44,7 +44,7 @@
               <%= link_to 'メモ削除', category_question_memo_path(question.category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
             </div>
             <div id="memo-<%= index %>" class="collapse show mt-3">
-              <div><%= simple_format(question.memo) %></div>
+              <div><%= simple_format(question.memo_content(current_user)) %></div>
             </div>
           </div>
         </div>

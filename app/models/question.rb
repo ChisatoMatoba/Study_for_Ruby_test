@@ -22,6 +22,10 @@ class Question < ApplicationRecord
     }
   end
 
+  def memo_content(user)
+    memos.find_by(user_id: user.id)&.content
+  end
+
   class << self
     def import(file, category, overwrite)
       CSV.foreach(file.path, headers: true) do |row|
