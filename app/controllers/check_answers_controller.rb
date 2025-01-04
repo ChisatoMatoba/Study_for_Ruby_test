@@ -18,7 +18,7 @@ class CheckAnswersController < ApplicationController
           is_correct: result[:is_correct],
           correct_choices: correct_choices,
           explanation: @question.explanation,
-          memo: @question.memo
+          memo: @question.memo_content(current_user)
         }
       end
     end

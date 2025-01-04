@@ -1,4 +1,4 @@
-<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-memo="<%= @question.memo %>">
+<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-memo="<%= @question.memo_content(current_user) %>">
   <div class="container">
     <div class="content">
       <h3>問題 <%= @question.number %> :</h3>

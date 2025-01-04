@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   belongs_to :category
   has_many :choices, dependent: :destroy
   has_many :quiz_results, dependent: :destroy
+  has_many :memos, dependent: :destroy
 
   with_options presence: true do
     validates :category_id
@@ -19,6 +20,10 @@ class Question < ApplicationRecord
       correct: correct_choice_ids,
       is_correct: is_correct
     }
+  end
+
+  def memo_content(user)
+    memos.find_by(user_id: user.id)&.content
   end
 
   class << self
