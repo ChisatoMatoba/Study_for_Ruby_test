@@ -5,8 +5,9 @@ class QuizResult < ApplicationRecord
 
   class << self
     # セッションタイムスタンプで結果を集計する
-    def aggregate_results_by_session
-      select('session_ts, category_id, COUNT(id) as total_questions, SUM(is_correct) as correct_answers')
+    def aggregate_results_by_session(user_id)
+      where(user_id: user_id)
+        .select('session_ts, category_id, COUNT(id) as total_questions, SUM(is_correct) as correct_answers')
         .group(:session_ts, :category_id)
         .order(session_ts: :desc)
     end

@@ -2,7 +2,7 @@
   <div class="content">
     <%= link_to "←戻る", root_path, class: "btn btn-outline-warning mb-5" %>
 
-    <h1>マイページ</h1>
+    <h1><%= @user.name %>さんのマイページ</h1>
     <h3>成績履歴</h3>
     <table class="table table-striped align-middle">
       <thead>
@@ -34,6 +34,9 @@
     <h3>メモ一覧</h3>
     <div id="memo_list">
       <% @questions_with_memos.each_with_index do |question, index| %>
+        <% memo = question.memo_content(@user) %>
+        <% next if memo.blank? %>
+
         <div class="card bg-info bg-opacity-10 mb-3">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
@@ -44,7 +47,7 @@
               <%= link_to 'メモ削除', category_question_memo_path(question.category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
             </div>
             <div id="memo-<%= index %>" class="collapse show mt-3">
-              <div><%= simple_format(question.memo_content(current_user)) %></div>
+              <div><%= simple_format(memo) %></div>
             </div>
           </div>
         </div>
