@@ -5,4 +5,15 @@ module ApplicationHelper
   rescue ArgumentError
     'Invalid date'
   end
+
+  def role_color(role)
+    case role
+    when 'owner'
+      'bg-warning'
+    when 'admin'
+      'bg-warning bg-opacity-25'
+    else
+      ''
+    end
+  end
 end
