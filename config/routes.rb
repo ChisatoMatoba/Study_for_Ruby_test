@@ -18,12 +18,12 @@ Rails.application.routes.draw do
     post 'start_quiz', to: 'quiz#create', as: :start_quiz # クイズ開始アクション
   end
 
-  resources :results, only: %i(index show destroy) do
+  resources :results, only: [:index, :show, :destroy] do
     collection do
       get :create_quiz, to: 'results#create_quiz_results' # クイズ結果登録アクション
     end
   end
 
-  resources :users, only: :show
+  resources :users, only: [:index, :show]
   get '/csv_upload_guidelines', to: 'home#csv_upload_guidelines'
 end
