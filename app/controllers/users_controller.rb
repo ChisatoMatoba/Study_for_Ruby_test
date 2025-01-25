@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_owner, only: %i[show edit update]
+  before_action :require_owner, only: %i[show edit update destroy]
 
   def index
     redirect_to root_path unless current_user&.owner?
@@ -28,6 +28,15 @@ class UsersController < ApplicationController
     else
       flash.now[:alert] = '更新に失敗しました。'
       render :edit
+    end
+  end
+
+  def destroy
+    user = User.find(params[:id])
+    if user.destroy
+      redirect_to users_path, notice: "#{user.name} を削除しました。"
+    else
+      redirect_to users_path, alert: 'ユーザーの削除に失敗しました。'
     end
   end
 

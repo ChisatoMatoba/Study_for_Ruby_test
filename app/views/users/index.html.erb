@@ -20,7 +20,7 @@
             <td class="<%= role_color(user.role) %>"><%= user.role %></td>
             <td class="d-flex justify-content-evenly">
               <%= link_to "編集", edit_user_path(user.id), class: "btn btn-outline-primary" %>
-              <%= link_to '削除', "#", data: { turbo_method: :delete, turbo_confirm: "ユーザーと今までの成績も削除されます。よろしいですか？"}, class: "btn btn-outline-danger" %>
+              <%= link_to '削除', user_path(user.id), data: { turbo_method: :delete, turbo_confirm: "ユーザーと今までの成績も削除されます。よろしいですか？"}, class: "btn btn-outline-danger" %>
             </td>
           </tr>
         <% end %>
