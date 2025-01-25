@@ -1,0 +1,43 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      category: カテゴリー
+      question: 問題
+      choice: 選択肢
+      quiz_result: 結果
+      memo: メモ
+
+    attributes:
+      user:
+        name: 名前
+        email: Eメール
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+        role: 役割
+      category:
+        name: カテゴリー名
+      question:
+        number: 問題番号
+        content: 問題文
+        explanation: 解説
+      choice:
+        content: 選択肢
+      quiz_result:
+        selected: 選択した選択肢
+        correct: 正解
+        is_correct: 正誤
+      memo:
+        content: メモ
+
+    enum:
+      user:
+        role:
+          owner: オーナー
+          admin: 管理者
+          general: 一般ユーザー
+
+
+  errors:
+    messages:
+      blank: "が入力されていません"

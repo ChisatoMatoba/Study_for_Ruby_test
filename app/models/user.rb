@@ -24,6 +24,6 @@ class User < ApplicationRecord
     allowed_domain = ENV['ALLOWED_EMAIL_DOMAIN']
     return if email.end_with?(allowed_domain)
 
-    errors.add(:email, 'は会社メールである必要があります。')
+    errors.add(:email, 'は会社メールである必要があります')
   end
 end
