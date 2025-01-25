@@ -22,7 +22,7 @@ class User < ApplicationRecord
     return if email.blank?
 
     allowed_domain = ENV['ALLOWED_EMAIL_DOMAIN']
-    return unless !email.end_with?(allowed_domain)
+    return if email.end_with?(allowed_domain)
 
     errors.add(:email, 'は会社メールである必要があります。')
   end
