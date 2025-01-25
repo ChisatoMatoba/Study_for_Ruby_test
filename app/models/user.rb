@@ -12,5 +12,18 @@ class User < ApplicationRecord
   validates :encrypted_password,  presence: true
   validates :role,                presence: true
 
+  validate :validate_email_domain
+
   enum role: { general: 0, admin: 1, owner: 2 }
+
+  private
+
+  def validate_email_domain
+    return if email.blank?
+
+    allowed_domain = ENV['ALLOWED_EMAIL_DOMAIN']
+    return if email.end_with?(allowed_domain)
+
+    errors.add(:email, 'は会社メールである必要があります。')
+  end
 end
