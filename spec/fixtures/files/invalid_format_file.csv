@@ -1,0 +1,25 @@
+number,"question_content","explanation","choices"
+1,"次のコードを実行するとどうなりますか？
+```ruby
+array = [1, 2, 3]
+array.each do |i|
+  array << i * 2
+  break if array.size > 5
+end
+p array
+```","配列`array`をループ内で変更すると、ループの反復回数も動的に変化します。ループ内で`array`に要素を追加しており、サイズが6を超えた時点でbreakされます。最終的な配列の状態は`[1, 2, 3, 2, 4, 6]`となります。","`[1, 2, 3, 2, 4, 6]`と表示される。~true,, `無限ループになる。`~false,, `エラーが発生する。`~false,, `nilが表示される。`~false"
+2,"次のコードを実行するとどうなりますか？
+```ruby
+hash = { a: 100, b: 200 }
+hash.default = 0
+p hash[:c]
+```","ハッシュに対して`default`メソッドを使用すると、存在しないキーにアクセスした場合にデフォルト値を返します。ここでは、`hash[:c]`が存在しないため、デフォルト値の0が返されます。","`nil`が表示される。~false,, `0`が表示される。~true,, `エラーが発生する。`~false,, `100`が表示される。~false"
+3,"次のコードを実行するとどうなりますか？
+```ruby
+str = ""hello""
+def str.reverse
+  "olleh!""
+end
+p str.reverse
+p ""world"".reverse
+```","ダブルクォーテーションがエスケープされていないのでエラーになります","`\""olleh!\""`と`\""dlrow\""`が表示される。~true,, `\""olleh!\""`と`\""world\""`が表示される。~false,, `\""hello\""`と`\""dlrow\""`が表示される。~false,, `エラーが発生する。`~false"
