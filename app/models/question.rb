@@ -66,7 +66,7 @@ class Question < ApplicationRecord
     def choices_create(question, choices)
       choices.split(',,').each do |choice|
         content, is_correct = choice.split('~')
-        content = content&.strip.presence  # 空文字は nil にする
+        content = content&.strip.presence # 空文字は nil にする
         is_correct = is_correct&.strip.presence
 
         # `content` が nil の場合はエラー
