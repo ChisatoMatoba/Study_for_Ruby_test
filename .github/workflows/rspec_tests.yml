@@ -9,6 +9,10 @@ on:
 jobs:
   test_mysql:
     runs-on: ubuntu-latest
+
+    env:
+      ALLOWED_EMAIL_DOMAIN: '@example.com'
+
     services:
       mysql:
         image: mysql:8.1
@@ -18,7 +22,6 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 20s --health-timeout 10s --health-retries 10
-
 
     steps:
       - uses: actions/checkout@v2

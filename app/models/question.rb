@@ -9,6 +9,7 @@ class Question < ApplicationRecord
   with_options presence: true do
     validates :category_id
     validates :content
+    validates :explanation
     validates :number, uniqueness: { scope: :category_id }
   end
 
@@ -51,18 +52,35 @@ class Question < ApplicationRecord
     end
 
     def create_question_choices(row, category)
-      question = category.questions.create!(
+      question = category.questions.new(
         number: row['number'],
         content: row['question_content'],
         explanation: row['explanation']
       )
+
+      raise "問題の保存に失敗しました: #{question.errors.full_messages.join(', ')}" unless question.save
+
       choices_create(question, row['choices'])
     end
 
     def choices_create(question, choices)
       choices.split(',,').each do |choice|
         content, is_correct = choice.split('~')
-        question.choices.create!(content: content.strip, is_correct: is_correct.strip == 'true')
+        content = content&.strip.presence # 空文字は nil にする
+        is_correct = is_correct&.strip.presence
+
+        # `content` が nil の場合はエラー
+        raise '選択肢の保存に失敗しました: 選択肢 が入力されていません' if content.nil?
+
+        # `is_correct` が `true` または `false` 以外の場合はエラー
+        raise '選択肢の保存に失敗しました: 選択肢が正解かどうか の値が不正です' unless %w[true false].include?(is_correct)
+
+        choice = question.choices.new(
+          content: content.strip,
+          is_correct: is_correct
+        )
+
+        raise "選択肢の保存に失敗しました: #{choice_record.errors.full_messages.join(', ')} (選択肢の内容: '#{content.strip}')" unless choice.save
       end
     end
   end

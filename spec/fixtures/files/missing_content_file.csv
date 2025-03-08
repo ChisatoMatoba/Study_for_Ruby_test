@@ -1,0 +1,20 @@
+number,"question_content","explanation","choices"
+1,"次のコードを実行するとどうなりますか？
+```ruby
+array = [1, 2, 3]
+array.each do |i|
+  array << i * 2
+  break if array.size > 5
+end
+p array
+```","配列`array`をループ内で変更すると、ループの反復回数も動的に変化します。ループ内で`array`に要素を追加しており、サイズが6を超えた時点でbreakされます。最終的な配列の状態は`[1, 2, 3, 2, 4, 6]`となります。","`[1, 2, 3, 2, 4, 6]`と表示される。~true,, `無限ループになる。`~false,, `エラーが発生する。`~false,, `nilが表示される。`~false"
+2,,"問題文が足りないテストです","`nil`が表示される。~false,, `0`が表示される。~true,, `エラーが発生する。`~false,, `100`が表示される。~false"
+3,"次のコードを実行するとどうなりますか？
+```ruby
+str = ""hello""
+def str.reverse
+  ""olleh!""
+end
+p str.reverse
+p ""world"".reverse
+```","`str`は通常のStringオブジェクトですが、`reverse`メソッドをオーバーライドしています。そのため、`str.reverse`を呼び出すと、通常のString#reverseではなく、オーバーライドされたメソッドが実行されます。一方、`""world"".reverse`は通常のStringクラスのメソッドが実行されます。","`\""olleh!\""`と`\""dlrow\""`が表示される。~true,, `\""olleh!\""`と`\""world\""`が表示される。~false,, `\""hello\""`と`\""dlrow\""`が表示される。~false,, `エラーが発生する。`~false"

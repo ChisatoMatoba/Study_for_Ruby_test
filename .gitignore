@@ -70,3 +70,5 @@ yarn-debug.log*
 
 # Ignore csv files
 *.csv
+# But keep CSV files inside spec/fixtures/files/
+!spec/fixtures/files/*.csv
