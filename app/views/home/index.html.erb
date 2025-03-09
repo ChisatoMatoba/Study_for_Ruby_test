@@ -4,20 +4,22 @@
     <p>このアプリはRubyの試験対策を目的としています。</p>
 
     <h2>使い方</h2>
-    <p>1. このアプリでは成績管理のためにログインが必要です。まだの方はまずユーザー登録してください！</p>
+    <p>1. このアプリでは成績管理のためにログインが必要です。<br>　まだの方はまずユーザー登録してください！</p>
     <% unless user_signed_in? %>
       <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-warning" %>
       <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning" %>
     <% end %>
 
-    <p>2. 問題を登録します。問題はカテゴリーごとに登録できます。</p>
-    <p>3. 問題を解いてみましょう！</p>
-    <%= link_to "問題一覧", categories_path, class: "btn btn-outline-warning" %>
+    <p>2. 問題を登録します。問題はカテゴリーごとに登録できます。<br>　※問題登録は管理者権限が必要です。</p>
+
+    <p>3. 問題を解いてみましょう！<br>
+    <%= link_to "問題一覧", categories_path, class: "btn btn-outline-warning" %></p>
 
 
-    <p>4. ログインして、解いた問題の成績を確認できます。</p>
+    <p>4. ログインして、解いた問題の成績を確認できます。<br>
     <% if user_signed_in? %>
       <%= link_to 'マイページ', user_path(current_user), class: "btn btn-outline-warning" %>
     <% end %>
+    </p>
   </div>
 </div>

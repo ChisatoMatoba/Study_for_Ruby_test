@@ -23,13 +23,17 @@
             <td><%= category.questions.count %></td>
             <td><%= category.created_at.strftime("%Y/%m/%d") %></td>
             <td><%= category.questions.maximum(:updated_at).strftime("%Y/%m/%d") %></td>
-            <td><%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "カテゴリー全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
+            <% if current_user.owner? %>
+              <td><%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "カテゴリー全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
     </table>
-    <div class="d-grid gap-2 col-4 mx-auto">
-      <%= link_to '新規作成', new_category_path, class: "btn btn-outline-info" %>
-    </div>
+    <% if current_user.admin_or_owner? %>
+      <div class="d-grid gap-2 col-4 mx-auto">
+        <%= link_to '新規作成', new_category_path, class: "btn btn-outline-info" %>
+      </div>
+    <% end %>
   </div>
 </div>

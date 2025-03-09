@@ -16,6 +16,10 @@ class User < ApplicationRecord
 
   enum role: { general: 0, admin: 1, owner: 2 }
 
+  def admin_or_owner?
+    admin? || owner?
+  end
+
   private
 
   def validate_email_domain
