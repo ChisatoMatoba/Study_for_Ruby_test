@@ -28,6 +28,7 @@ class ResultsController < ApplicationController
 
   def destroy
     @quiz_result = QuizResult.where(session_ts: params[:session_ts])
+    require_self_or_owner(@quiz_result.user_id)
 
     if @quiz_result.destroy_all
       redirect_to user_path(current_user), notice: 'クイズ結果が正常に削除されました。'
@@ -53,5 +54,13 @@ class ResultsController < ApplicationController
       quiz_results << quiz_result
     end
     quiz_results
+  end
+
+  def require_self_or_owner(user_id)
+    # Ownerはすべてのユーザーの情報にアクセス可能
+    return if current_user.owner?
+
+    # Owner以外は、自分の情報にしかアクセスできない
+    redirect_to root_path unless current_user.id == user_id.to_i
   end
 end

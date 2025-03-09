@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
+  before_action :require_admin_or_owner, only: %i[new create]
 
   def index
     @categories = Category.all.includes(:questions)
@@ -24,6 +25,8 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
+    redirect_to root_path, alert: '権限がありません。' unless current_user&.owner?
+
     @category = Category.find(params[:id])
     @category.destroy
     redirect_to categories_url, notice: 'カテゴリが正常に削除されました。'

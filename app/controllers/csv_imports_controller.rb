@@ -1,5 +1,6 @@
 class CsvImportsController < ApplicationController
   before_action :authenticate_user!
+  before_action :require_admin_or_owner
 
   # csvファイルをインポートする
   def create
