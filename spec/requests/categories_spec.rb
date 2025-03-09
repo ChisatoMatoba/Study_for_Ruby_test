@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Categories', type: :request do
-  include Devise::Test::IntegrationHelpers
-
   let(:general_user) { create(:user) }
   let(:admin_user) { create(:user, :admin) }
   let(:owner_user) { create(:user, :owner) }
