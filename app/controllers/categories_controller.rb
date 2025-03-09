@@ -25,7 +25,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    redirect_to root_path, alert: '権限がありません。' unless current_user&.owner?
+    redirect_to(root_path, alert: '権限がありません。') && return unless current_user&.owner?
 
     @category = Category.find(params[:id])
     @category.destroy
