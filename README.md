@@ -34,6 +34,13 @@
 - 不正解の問題の解説を見たり、追加学習結果をメモすることで、知識の定着が期待出来ます
 - メモ一覧を見ることが出来ます
 
+## ユーザーの役割による機能制約
+役割 | カテゴリ管理 | メモ・成績閲覧 | ユーザー管理
+-- | -- | -- | --
+owner | ○（削除も） | 全員分可 | 一覧・削除・編集○
+admin | ○（削除×） | 自分のみ | ×
+general | × | 自分のみ | ×
+
 ## 設計情報
 ### 画面遷移、フローチャート
 ```mermaid
@@ -77,6 +84,7 @@ erDiagram
         string name
         string email
         string password
+        int role
     }
     CATEGORIES {
         string name
