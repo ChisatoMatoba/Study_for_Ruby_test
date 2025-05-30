@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_29_140400) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_29_143846) do
   create_table "choices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "question_id", null: false
     t.text "content", null: false
@@ -38,14 +38,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_29_140400) do
   end
 
   create_table "questions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "category_id", null: false
+    t.bigint "question_category_id", null: false
     t.integer "number", null: false
     t.text "content", null: false
     t.text "explanation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id", "number"], name: "index_questions_on_category_id_and_number", unique: true
-    t.index ["category_id"], name: "index_questions_on_category_id"
+    t.index ["question_category_id", "number"], name: "index_questions_on_question_category_id_and_number", unique: true
+    t.index ["question_category_id"], name: "index_questions_on_question_category_id"
   end
 
   create_table "quiz_results", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -89,7 +89,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_29_140400) do
   add_foreign_key "choices", "questions"
   add_foreign_key "memos", "questions"
   add_foreign_key "memos", "users"
-  add_foreign_key "questions", "question_categories", column: "category_id"
+  add_foreign_key "questions", "question_categories"
   add_foreign_key "quiz_results", "question_categories", column: "category_id"
   add_foreign_key "quiz_results", "questions"
   add_foreign_key "quiz_results", "users"
