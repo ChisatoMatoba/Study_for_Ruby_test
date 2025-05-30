@@ -1,7 +1,7 @@
 class CheckAnswersController < ApplicationController
   before_action :authenticate_user!
 
-  # POST /categories/:category_id/questions/:question_id/check_answers
+  # POST /question_categories/:question_category_id/questions/:question_id/check_answers
   # 選択の正誤をチェックする
   def create
     @question = Question.find(params[:question_id])

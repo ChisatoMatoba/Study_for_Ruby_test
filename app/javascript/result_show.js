@@ -2,9 +2,9 @@ import { setupMemoEditor } from './memo_editor'; // memo_editor.js を読み込�
 
 document.addEventListener('turbo:load', function () {
   const body = document.querySelector('body');
-  const categoryId = body.dataset.categoryId;
+  const questionCategoryId = body.dataset.questionCategoryId;
   const questionId = body.dataset.questionId;
 
   // メモを編集するためのセットアップを呼び出し
-  setupMemoEditor({ categoryId, questionId, memo: body.dataset.memo });
+  setupMemoEditor({ questionCategoryId, questionId, memo: body.dataset.memo });
 });

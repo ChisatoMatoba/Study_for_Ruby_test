@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :quiz_result do
     user
-    category
+    question_category
     question
     session_ts { Time.current.to_i }
     is_correct { [true, false].sample }

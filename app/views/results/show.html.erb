@@ -1,4 +1,4 @@
-<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-memo="<%= @question.memo_content(current_user) %>">
+<body data-question-category-id="<%= @question.question_category.id %>" data-question-id="<%= @question.id %>" data-memo="<%= @question.memo_content(current_user) %>">
   <div class="container">
     <div class="content">
       <h3>問題 <%= @question.number %> :</h3>
@@ -34,6 +34,6 @@
       </div>
     </div>
 
-    <%= link_to '←結果ページに戻る', results_path(@question.category, session_ts: @session_ts), class: "btn  btn-outline-warning" %>
+    <%= link_to '←結果ページに戻る', results_path(@question.question_category, session_ts: @session_ts), class: "btn  btn-outline-warning" %>
   </div>
 </body>

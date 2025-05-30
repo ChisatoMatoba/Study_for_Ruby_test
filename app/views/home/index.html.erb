@@ -10,10 +10,10 @@
       <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning" %>
     <% end %>
 
-    <p>2. 問題を登録します。問題はカテゴリーごとに登録できます。<br>　※問題登録は管理者権限が必要です。</p>
+    <p>2. 問題を登録します。問題は問題集ごとに登録できます。<br>　※問題登録は管理者権限が必要です。</p>
 
     <p>3. 問題を解いてみましょう！<br>
-    <%= link_to "問題一覧", categories_path, class: "btn btn-outline-warning" %></p>
+    <%= link_to "問題一覧", question_categories_path, class: "btn btn-outline-warning" %></p>
 
 
     <p>4. ログインして、解いた問題の成績を確認できます。<br>

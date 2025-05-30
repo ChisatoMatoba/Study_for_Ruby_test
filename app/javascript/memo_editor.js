@@ -1,4 +1,4 @@
-export function setupMemoEditor({ categoryId, questionId, memo }) {
+export function setupMemoEditor({ questionCategoryId, questionId, memo }) {
   const editMemoButton = document.getElementById('edit_memo_button');
   const editMemo = document.getElementById('edit_memo');
   const memoDisplay = document.getElementById('memo');
@@ -38,7 +38,7 @@ export function setupMemoEditor({ categoryId, questionId, memo }) {
 
   // メモをサーバーに保存する
   function saveMemoContent(content) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/memo`, {
+    fetch(`/question_categories/${questionCategoryId}/questions/${questionId}/memo`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

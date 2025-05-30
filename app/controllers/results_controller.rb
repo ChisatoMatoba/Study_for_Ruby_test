@@ -11,8 +11,8 @@ class ResultsController < ApplicationController
   def index
     @session_ts = params[:session_ts].to_i
     @quiz_results = QuizResult.where(session_ts: @session_ts)
-    @category = Category.includes(:questions).find(@quiz_results.first.category_id)
-    @questions = @category.questions
+    @question_category = QuestionCategory.includes(:questions).find(@quiz_results.first.question_category_id)
+    @questions = @question_category.questions
 
     # 正答率
     correct_answers_count = @quiz_results.where(is_correct: true).count
@@ -44,7 +44,7 @@ class ResultsController < ApplicationController
     results.each do |question_id, result|
       quiz_result = QuizResult.create!(
         user_id: current_user.id,
-        category_id: Category.find(Question.find(question_id).category_id).id,
+        question_category_id: QuestionCategory.find(Question.find(question_id).question_category_id).id,
         question_id: question_id,
         selected: result[:selected],
         correct: result[:correct],

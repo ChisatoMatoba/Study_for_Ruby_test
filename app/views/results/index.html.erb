@@ -2,7 +2,7 @@
   <h1>成績</h1>
 
   <div class="content">
-    <h5>カテゴリー: <%= @category.name %></h5>
+    <h5>問題集: <%= @question_category.name %></h5>
     <h5>問題数: <%= @quiz_results.count %></h5>
     <h5>正答率: <%= @accuracy_rate %> %</h5>
     <h5>実施日時: <%= format_session_timestamp(@session_ts) %></h5>

@@ -1,14 +1,14 @@
 <div class="container">
   <div class="content">
-    <%= link_to "←戻る", categories_path, class: "btn btn-outline-warning mb-5" %>
+    <%= link_to "←戻る", question_categories_path, class: "btn btn-outline-warning mb-5" %>
 
-    <h1><%= @category.name %></h1>
+    <h1><%= @question_category.name %></h1>
 
     <% if current_user.admin_or_owner? %>
       <h2>問題登録</h2>
       <div class="container card mb-3">
         <p>CSVファイルアップロードにより登録します。csvの記載ルールは<a href="/csv_upload_guidelines" type="button" class="btn btn-link">こちら</a></p>
-        <%= form_with url: category_csv_imports_path(@category), local: true, multipart: true do %>
+        <%= form_with url: question_category_csv_imports_path(@question_category), local: true, multipart: true do %>
           <div class="form-group mb-3">
             <%= file_field_tag :file %>
           </div>

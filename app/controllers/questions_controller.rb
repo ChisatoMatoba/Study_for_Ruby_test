@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
     next_question_id = question_ids[current_index + 1] if current_index
 
     if next_question_id
-      redirect_to category_question_path(@question.category, next_question_id)
+      redirect_to question_category_question_path(@question.question_category, next_question_id)
     else
       redirect_to create_quiz_results_path
     end

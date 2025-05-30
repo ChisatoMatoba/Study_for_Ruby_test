@@ -32,12 +32,12 @@ RSpec.describe Question, type: :model do
     end
   end
 
-  describe '#self.import(file, category, overwrite)' do
-    let(:category) { create(:category) }
+  describe '#self.import(file, question_category, overwrite)' do
+    let(:question_category) { create(:question_category) }
     let(:file) { fixture_file_upload('spec/fixtures/files/valid_file.csv', 'text/csv') }
 
     it 'CSVファイルの内容をインポートできること' do
-      expect { Question.import(file, category, false) }
+      expect { Question.import(file, question_category, false) }
         .to change(Question, :count)
         .by(3)
         .and change(Choice, :count)
@@ -45,10 +45,10 @@ RSpec.describe Question, type: :model do
     end
 
     it '問題が重複している場合、選択肢を上書きすること' do
-      question = create(:question, category: category, number: 1)
+      question = create(:question, question_category: question_category, number: 1)
       create_list(:choice, 4, question: question)
 
-      expect { Question.import(file, category, true) }
+      expect { Question.import(file, question_category, true) }
         .to change(Question, :count)
         .by(2)
         .and change(Choice, :count)
@@ -57,7 +57,7 @@ RSpec.describe Question, type: :model do
 
     it '問題番号が足りないcsvの場合、エラーになること' do
       missing_number_file = fixture_file_upload('spec/fixtures/files/missing_number_file.csv', 'text/csv')
-      expect { Question.import(missing_number_file, category, false) }
+      expect { Question.import(missing_number_file, question_category, false) }
         .to raise_error(RuntimeError, '問題の保存に失敗しました: 問題番号 が入力されていません')
         .and change(Question, :count)
         .by(1)
@@ -67,7 +67,7 @@ RSpec.describe Question, type: :model do
 
     it '問題文が空欄のcsvの場合、エラーになること' do
       missing_content_file = fixture_file_upload('spec/fixtures/files/missing_content_file.csv', 'text/csv')
-      expect { Question.import(missing_content_file, category, false) }
+      expect { Question.import(missing_content_file, question_category, false) }
         .to raise_error(RuntimeError, '問題の保存に失敗しました: 問題文 が入力されていません')
         .and change(Question, :count)
         .by(1)
@@ -77,7 +77,7 @@ RSpec.describe Question, type: :model do
 
     it '解説が空欄のcsvの場合、エラーになること' do
       missing_explanation_file = fixture_file_upload('spec/fixtures/files/missing_explanation_file.csv', 'text/csv')
-      expect { Question.import(missing_explanation_file, category, false) }
+      expect { Question.import(missing_explanation_file, question_category, false) }
         .to raise_error(RuntimeError, '問題の保存に失敗しました: 解説 が入力されていません')
         .and change(Question, :count)
         .by(1)
@@ -87,7 +87,7 @@ RSpec.describe Question, type: :model do
 
     it '選択肢のcontentが空欄の場合、エラーになること' do
       missing_choices_content_file = fixture_file_upload('spec/fixtures/files/missing_choices_content_file.csv', 'text/csv')
-      expect { Question.import(missing_choices_content_file, category, false) }
+      expect { Question.import(missing_choices_content_file, question_category, false) }
         .to raise_error(RuntimeError, '選択肢の保存に失敗しました: 選択肢 が入力されていません')
         .and change(Question, :count)
         .by(2)
@@ -97,7 +97,7 @@ RSpec.describe Question, type: :model do
 
     it '選択肢のtrue/falseが正しく入力されていない場合、エラーになること' do
       invalid_choices_file = fixture_file_upload('spec/fixtures/files/invalid_choices_file.csv', 'text/csv')
-      expect { Question.import(invalid_choices_file, category, false) }
+      expect { Question.import(invalid_choices_file, question_category, false) }
         .to raise_error(RuntimeError, '選択肢の保存に失敗しました: 選択肢が正解かどうか の値が不正です')
         .and change(Question, :count)
         .by(2)
@@ -107,7 +107,7 @@ RSpec.describe Question, type: :model do
 
     it 'フォーマットミスしている場合、エラーになること' do
       invalid_format_file = fixture_file_upload('spec/fixtures/files/invalid_format_file.csv', 'text/csv')
-      expect { Question.import(invalid_format_file, category, false) }
+      expect { Question.import(invalid_format_file, question_category, false) }
         .to raise_error(CSV::MalformedCSVError, "Any value after quoted field isn't allowed in line 4.")
     end
   end
