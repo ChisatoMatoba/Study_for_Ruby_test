@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @quiz_results = QuizResult.aggregate_results_by_session(@user.id)
 
     # ユーザーが保存したすべてのメモを取得
-    @questions_with_memos = Question.includes(:memos).where(memos: { user_id: @user.id }).order(:category_id, :number)
+    @questions_with_memos = Question.includes(:memos).where(memos: { user_id: @user.id }).order(:question_category_id, :number)
   end
 
   def edit

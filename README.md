@@ -13,7 +13,7 @@
 成績管理のために必要です。
 
 ### 2. 問題作成
-(1) 問題一覧ページからカテゴリー名を登録
+(1) 問題一覧ページから問題集名を登録
 
 (2)問題詳細ページからアクセスできる[CSVアップロードガイドライン](app/views/home/csv_upload_guidelines.html)を参考に、csvファイルを用意してアップロードして下さい。
 
@@ -35,7 +35,7 @@
 - メモ一覧を見ることが出来ます
 
 ## ユーザーの役割による機能制約
-役割 | カテゴリ管理 | メモ・成績閲覧 | ユーザー管理
+役割 | 問題集管理 | メモ・成績閲覧 | ユーザー管理
 -- | -- | -- | --
 owner | ○（削除も） | 全員分可 | 一覧・削除・編集○
 admin | ○（削除×） | 自分のみ | ×
@@ -86,14 +86,14 @@ erDiagram
         string password
         int role
     }
-    CATEGORIES {
+    QUESTION_CATEGORIES {
         string name
     }
     QUESTIONS {
         int number
         text content
         text explanation
-        int category_id
+        int question_category_id
     }
     CHOICES {
         text content
@@ -106,14 +106,14 @@ erDiagram
         boolean is_correct
         bigint session_ts
         int user_id
-        int category_id
+        int question_category_id
         int question_id
     }
 
     USERS ||--o{ QUIZ_RESULTS : "has"
-    CATEGORIES ||--o{ QUESTIONS : "has"
+    QUESTION_CATEGORIES ||--o{ QUESTIONS : "has"
     QUESTIONS ||--o{ CHOICES : "has"
     USERS ||--o{ QUIZ_RESULTS : "has"
-    CATEGORIES ||--o{ QUIZ_RESULTS : "has"
+    QUESTION_CATEGORIES ||--o{ QUIZ_RESULTS : "has"
     QUESTIONS ||--o{ QUIZ_RESULTS : "has"
 ```

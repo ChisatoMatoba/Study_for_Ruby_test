@@ -1,4 +1,4 @@
-<body data-category-id="<%= @question.category.id %>" data-question-id="<%= @question.id %>" data-next-question-url="<%= next_category_question_path(@question.category, @question) %>">
+<body data-question-category-id="<%= @question.question_category.id %>" data-question-id="<%= @question.id %>" data-next-question-url="<%= next_question_category_question_path(@question.question_category, @question) %>">
   <div class="container">
     <div class="content">
       <div class="d-flex justify-content-start align-items-center">

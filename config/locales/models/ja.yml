@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      category: カテゴリー
+      question_category: 問題集
       question: 問題
       choice: 選択肢
       quiz_result: 結果
@@ -15,8 +15,8 @@ ja:
         password: パスワード
         password_confirmation: パスワード（確認用）
         role: 役割
-      category:
-        name: カテゴリー名
+      question_category:
+        name: 問題集名
       question:
         number: 問題番号
         content: 問題文

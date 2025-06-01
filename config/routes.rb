@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
 
-  resources :categories do
+  resources :question_categories do
 
     resources :questions, only: :show do
       resources :check_answers, only: :create # 回答チェック

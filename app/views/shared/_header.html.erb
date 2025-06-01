@@ -8,7 +8,7 @@
   <header class="cp_offcm02">
     <nav><ul>
       <li><a href="/">TOP</a></li>
-      <li><%= link_to '問題', categories_path %></li>
+      <li><%= link_to '問題', question_categories_path %></li>
       <li>
         <% if user_signed_in? %>
           <%= link_to 'マイページ', user_path(current_user)%></li>

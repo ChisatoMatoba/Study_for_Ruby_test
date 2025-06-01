@@ -9,7 +9,7 @@ document.addEventListener('turbo:load', function () {
   const nextButton = document.getElementById('next_button');
   const quitButton = document.getElementById('quit_button');
   const body = document.querySelector('body');
-  const categoryId = body.dataset.categoryId;
+  const questionCategoryId = body.dataset.questionCategoryId;
   const questionId = body.dataset.questionId;
 
   // 選択肢をクリックしたときに選択状態を切り替える
@@ -39,7 +39,7 @@ document.addEventListener('turbo:load', function () {
 
   // サーバーに選択肢のIDを送信して正解判定を受け取る
   function sendAnswer(selectedIds) {
-    fetch(`/categories/${categoryId}/questions/${questionId}/check_answers`, {
+    fetch(`/question_categories/${questionCategoryId}/questions/${questionId}/check_answers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ document.addEventListener('turbo:load', function () {
     updateResultDisplay(data.is_correct); // 正解かどうかを表示
     updateCorrectAnswers(data.correct_choices); // 正しい選択肢を表示
     updateExplanation(data.explanation); // 解説を表示
-    setupMemoEditor({ categoryId, questionId, memo: data.memo }); // メモ表示と編集をセットアップ
+    setupMemoEditor({ questionCategoryId, questionId, memo: data.memo }); // メモ表示と編集をセットアップ
   }
 
   // 結果カードを表示/非表示にする
