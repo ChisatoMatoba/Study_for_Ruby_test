@@ -21,7 +21,11 @@ export function setupMemoEditor({ questionCategoryId, questionId, memo }) {
 
   // メモを保存
   if (saveMemoButton) {
-    saveMemoButton.addEventListener('click', function () {
+    // 古いイベントを削除する（イベント多重防止）
+    const newButton = saveMemoButton.cloneNode(true);
+    saveMemoButton.parentNode.replaceChild(newButton, saveMemoButton);
+
+    newButton.addEventListener('click', function () {
       const memoContent = document.getElementById('memo_content').value;
       saveMemoContent(memoContent);
     });

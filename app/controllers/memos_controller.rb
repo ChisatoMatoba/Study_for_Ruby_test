@@ -5,6 +5,8 @@ class MemosController < ApplicationController
     question = Question.find(params[:question_id])
     memo_content = params[:memo_content].presence || '' # 空の場合でも''として保存
     memo = question.memos.find_or_initialize_by(user: current_user)
+    memo.user_id ||= current_user.id
+
     require_self_or_owner(memo.user_id)
 
     if memo.update(content: memo_content)
