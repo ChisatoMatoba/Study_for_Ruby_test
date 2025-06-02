@@ -1,13 +1,9 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_owner
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :require_owner, except: [:index]
 
   def index
     @categories = Category.all.includes(:question_categories)
-  end
-
-  def show
   end
 
   def new
@@ -25,9 +21,11 @@ class CategoriesController < ApplicationController
   end
 
   def edit
+    @category = Category.find(params[:id])
   end
 
   def update
+    @category = Category.find(params[:id])
     if @category.update(category_params)
       redirect_to categories_path, notice: 'カテゴリーが正常に更新されました。'
     else
@@ -36,6 +34,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
+    @category = Category.find(params[:id])
     if @category.destroy
       redirect_to categories_path, notice: 'カテゴリーが正常に削除されました。'
     else
@@ -44,15 +43,6 @@ class CategoriesController < ApplicationController
   end
 
   private
-
-  # owner権限を要求するメソッド
-  def require_owner
-    redirect_to root_path, alert: 'この操作にはオーナー権限が必要です。' unless current_user&.owner?
-  end
-
-  def set_category
-    @category = Category.find(params[:id])
-  end
 
   def category_params
     params.require(:category).permit(:name)

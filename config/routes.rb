@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
 
-  resources :categories
+  resources :categories, except: :show
 
   resources :question_categories do
 
