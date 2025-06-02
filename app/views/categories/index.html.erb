@@ -11,7 +11,11 @@
           <% if current_user&.owner? %>
             <div>
               <%= link_to '編集', edit_category_path(category), class: "btn btn-warning" %>
-              <%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "このカテゴリを削除しますか？関連する問題集は削除されません。"}, class: "btn btn-danger" %>
+              <% if !category.question_categories.exists? %>
+                <%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "このカテゴリを削除します。よろしいですか？"}, class: "btn btn-danger" %>
+              <% else %>
+                <button class="btn btn-secondary" disabled title="関連する問題集があるため削除できません">削除</button>
+              <% end %>
             </div>
           <% end %>
         </div>

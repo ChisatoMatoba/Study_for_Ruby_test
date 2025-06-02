@@ -35,10 +35,12 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id])
-    if @category.destroy
+    if @category.question_categories.exists?
+      redirect_to categories_path, alert: '関連する問題集があるため、このカテゴリは削除できません'
+    elsif @category.destroy
       redirect_to categories_path, notice: 'カテゴリーが正常に削除されました。'
     else
-      redirect_to categories_path, alert: 'カテゴリーを削除できませんでした。'
+      redirect_to categories_path, alert: @category.errors.full_messages.join(', ')
     end
   end
 
