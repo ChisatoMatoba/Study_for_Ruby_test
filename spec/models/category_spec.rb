@@ -21,14 +21,14 @@ RSpec.describe Category, type: :model do
     end
   end
 
-  describe '#ensure_no_question_categories' do
+  describe '削除の制約' do
     context '関連するquestion_categoriesがある場合' do
       it '削除できないこと' do
         category = create(:category)
         create(:question_category, category: category)
 
         expect { category.destroy }.not_to(change { Category.count })
-        expect(category.errors.full_messages).to include('関連する問題集があるため、このカテゴリは削除できません')
+        expect(category.errors.full_messages).to include('関連する 問題集 が存在するため削除できません')
       end
     end
 
