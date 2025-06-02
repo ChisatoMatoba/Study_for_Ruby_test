@@ -86,8 +86,12 @@ erDiagram
         string password
         int role
     }
+    CATEGORIES {
+        string name
+    }
     QUESTION_CATEGORIES {
         string name
+        int category_id
     }
     QUESTIONS {
         int number
@@ -109,11 +113,18 @@ erDiagram
         int question_category_id
         int question_id
     }
+    MEMOS {
+        text content
+        int user_id
+        int question_id
+    }
 
     USERS ||--o{ QUIZ_RESULTS : "has"
+    USERS ||--o{ MEMOS : "has"
+    CATEGORIES ||--o{ QUESTION_CATEGORIES : "has"
     QUESTION_CATEGORIES ||--o{ QUESTIONS : "has"
     QUESTIONS ||--o{ CHOICES : "has"
-    USERS ||--o{ QUIZ_RESULTS : "has"
+    QUESTIONS ||--o{ MEMOS : "has"
     QUESTION_CATEGORIES ||--o{ QUIZ_RESULTS : "has"
     QUESTIONS ||--o{ QUIZ_RESULTS : "has"
 ```
