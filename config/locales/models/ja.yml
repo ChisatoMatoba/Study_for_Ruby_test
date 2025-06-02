@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      category: カテゴリ
       question_category: 問題集
       question: 問題
       choice: 選択肢
@@ -15,6 +16,8 @@ ja:
         password: パスワード
         password_confirmation: パスワード（確認用）
         role: 役割
+      category:
+        name: カテゴリ名
       question_category:
         name: 問題集名
       question:
@@ -41,3 +44,4 @@ ja:
   errors:
     messages:
       blank: "が入力されていません"
+      taken: "はすでに存在します"

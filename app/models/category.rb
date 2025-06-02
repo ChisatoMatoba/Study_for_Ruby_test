@@ -1,5 +1,7 @@
 class Category < ApplicationRecord
-  has_many :question_categories, dependent: :nullify
+  # カテゴリを削除しても問題集は残す（関連付けは残す）
+  # dependent: :nullifyは、category_idにnot null制約があるため使用不可
+  has_many :question_categories
 
   validates :name, presence: true, uniqueness: true
 
@@ -9,9 +11,9 @@ class Category < ApplicationRecord
   private
 
   def ensure_no_question_categories
-    if question_categories.exists?
-      errors.add(:base, '関連する問題集があるため、このカテゴリは削除できません')
-      throw :abort
-    end
+    return unless question_categories.exists?
+
+    errors.add(:base, '関連する問題集があるため、このカテゴリは削除できません')
+    throw :abort
   end
 end
