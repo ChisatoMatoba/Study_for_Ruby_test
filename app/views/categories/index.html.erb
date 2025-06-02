@@ -1,2 +1,71 @@
-<h1>Categories#index</h1>
-<p>Find me in app/views/categories/index.html.erb</p>
+<div class="container">
+  <div class="content">
+    <%= link_to "←戻る", root_path, class: "btn btn-outline-warning mb-5" %>
+
+    <h1>問題一覧</h1>
+
+    <% @categories.each do |category| %>
+      <div class="card mb-5">
+        <div class="card-header bg-info bg-opacity-50 text-dark d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><%= category.name %></h3>
+          <% if current_user&.owner? %>
+            <div>
+              <%= link_to '編集', edit_category_path(category), class: "btn btn-warning" %>
+              <%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "このカテゴリを削除しますか？関連する問題集は削除されません。"}, class: "btn btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <% if category.question_categories.present? %>
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th></th><th></th>
+                  <th>問題集</th>
+                  <th>問題数</th>
+                  <th>作成日</th>
+                  <th>最終更新日</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% category.question_categories.each do |question_category| %>
+                  <tr>
+                    <td><%= button_to '1番から解く', question_category_start_quiz_path(question_category, random: false), method: :post, class: "btn btn-success" %></td>
+                    <td><%= button_to 'ランダムで解く', question_category_start_quiz_path(question_category, random: true), method: :post, class: "btn btn-success" %></td>
+                    <td><%= link_to question_category.name, question_category_path(question_category), class: "btn btn-link btn-lg" %></td>
+                    <td><%= question_category.questions.count %></td>
+                    <td><%= question_category.created_at.strftime("%Y/%m/%d") %></td>
+                    <td><%= question_category.questions.maximum(:updated_at)&.strftime("%Y/%m/%d") %></td>
+                    <% if current_user&.owner? %>
+                      <td><%= link_to '削除', question_category_path(question_category), data: { turbo_method: :delete, turbo_confirm: "問題集全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+
+            <% if current_user&.admin_or_owner? %>
+              <div class="d-grid gap-2 col-4 mx-auto">
+                <%= link_to '問題集を作成', new_question_category_path(category), class: "btn btn-outline-primary" %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-center">このカテゴリには問題集がありません</p>
+            <% if current_user&.admin_or_owner? %>
+              <div class="d-grid gap-2 col-4 mx-auto">
+                <%= link_to '問題集を作成', new_question_category_path(category), class: "btn btn-outline-primary" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if current_user&.owner? %>
+      <div class="d-grid gap-2 col-4 mx-auto mb-4">
+        <%= link_to '新規カテゴリ作成', new_category_path, class: "btn btn-outline-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
