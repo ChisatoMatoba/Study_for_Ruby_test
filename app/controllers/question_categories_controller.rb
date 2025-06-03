@@ -2,18 +2,16 @@ class QuestionCategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin_or_owner, only: %i[new create]
 
-  def index
-    @question_categories = QuestionCategory.all.includes(:questions)
-  end
-
   def new
+    @category = Category.find(params[:category_id])
     @question_category = QuestionCategory.new
   end
 
   def create
-    @question_category = QuestionCategory.new(question_category_params)
+    @category = Category.find(params[:category_id])
+    @question_category = @category.question_categories.build(question_category_params)
     if @question_category.save
-      redirect_to @question_category, notice: '問題集が正常に作成されました。'
+      redirect_to category_question_category_path(@category, @question_category), notice: '問題集が正常に作成されました。'
     else
       render :new, status: :unprocessable_entity
     end
@@ -21,6 +19,7 @@ class QuestionCategoriesController < ApplicationController
 
   def show
     @question_category = QuestionCategory.find(params[:id])
+    @category = @question_category.category
     @questions = @question_category.questions.includes(:choices)
   end
 
@@ -28,8 +27,9 @@ class QuestionCategoriesController < ApplicationController
     redirect_to(root_path, alert: '権限がありません。') && return unless current_user&.owner?
 
     @question_category = QuestionCategory.find(params[:id])
+    @category = @question_category.category
     @question_category.destroy
-    redirect_to question_categories_url, notice: '問題集が正常に削除されました。'
+    redirect_to categories_path, notice: '問題集が正常に削除されました。'
   end
 
   private

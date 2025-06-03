@@ -38,6 +38,7 @@
       <thead>
         <tr>
           <th>実施日</th>
+          <th>カテゴリ</th>
           <th>問題集</th>
           <th>問題数</th>
           <th>正解数</th>
@@ -48,6 +49,7 @@
         <% @quiz_results.each do |result| %>
           <tr>
             <td><%= format_session_timestamp(result.session_ts) %></td>
+            <td><%= result.question_category.category.name %></td>
             <td><%= link_to result.question_category.name, results_path(session_ts: result.session_ts), class: "btn btn-link btn-lg" %></td>
             <td><%= result.total_questions %></td>
             <td><%= result.correct_answers %></td>
@@ -59,28 +61,49 @@
     </table>
   </div>
 
-
   <div class="content">
     <h3>メモ一覧</h3>
-    <div id="memo_list">
-      <% @questions_with_memos.each_with_index do |question, index| %>
-        <% memo = question.memo_content(@user) %>
-        <% next if memo.blank? %>
+    <div class="accordion" id="memoAccordion">
+      <% @questions_with_memos
+        .group_by { |q| [q.question_category.category.name, q.question_category.name] }
+        .each_with_index do |((category_name, qcat_name), questions), cat_index| %>
 
-        <div class="card bg-info bg-opacity-10 mb-3">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <h5>問題 <%= question.number %> - 問題集: <%= question.question_category.name %></h5>
-              <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#memo-<%= index %>" aria-expanded="true" aria-controls="memo-<%= index %>">
-                メモを表示/非表示
-              </button>
-              <%= link_to 'メモ削除', question_category_question_memo_path(question.question_category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-danger' %>
-            </div>
-            <div id="memo-<%= index %>" class="collapse show mt-3">
-              <div><%= simple_format(memo) %></div>
+        <% questions = questions.select { |q| q.memo_content(@user).present? } %>
+        <% next if questions.empty? %>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header " id="heading-<%= cat_index %>">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-<%= cat_index %>"
+                    aria-expanded="false"
+                    aria-controls="collapse-<%= cat_index %>">
+              <%= category_name %> / <%= qcat_name %>
+            </button>
+          </h2>
+
+          <div id="collapse-<%= cat_index %>" class="accordion-collapse collapse" aria-labelledby="heading-<%= cat_index %>">
+            <div class="accordion-body">
+
+              <% questions.each do |question| %>
+                <% memo = question.memo_content(@user) %>
+
+                <div class="card bg-info bg-opacity-10 mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="mb-0">問題 <%= question.number %></h6>
+                      <%= link_to 'メモ削除', question_category_question_memo_path(question.question_category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-sm btn-danger' %>
+                    </div>
+                    <div class="mt-2"><%= simple_format(memo) %></div>
+                  </div>
+                </div>
+
+              <% end %>
+
             </div>
           </div>
         </div>
+
       <% end %>
     </div>
   </div>

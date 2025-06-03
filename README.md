@@ -35,11 +35,11 @@
 - メモ一覧を見ることが出来ます
 
 ## ユーザーの役割による機能制約
-役割 | 問題集管理 | メモ・成績閲覧 | ユーザー管理
--- | -- | -- | --
-owner | ○（削除も） | 全員分可 | 一覧・削除・編集○
-admin | ○（削除×） | 自分のみ | ×
-general | × | 自分のみ | ×
+役割 | カテゴリ管理 | 問題集管理 | メモ・成績閲覧 | ユーザー管理
+-- | -- | -- | -- | --
+owner | ○ | ○（削除も） | 全員分可 | 一覧・削除・編集○
+admin | × | ○（削除×） | 自分のみ | ×
+general | × | × | 自分のみ | ×
 
 ## 設計情報
 ### 画面遷移、フローチャート
@@ -54,7 +54,7 @@ flowchart TB
   node_10["問題・回答・解説・メモを追記"]
   node_11{"最後の問題？"}
   node_12["成績（正否一覧）"]
-  node_13["問題詳細"]
+  node_13["問題集詳細"]
   node_14("問題作成")
   node_15["マイページ（成績履歴）"]
   node_16["問題ごとの正解と解説"]
@@ -86,8 +86,12 @@ erDiagram
         string password
         int role
     }
+    CATEGORIES {
+        string name
+    }
     QUESTION_CATEGORIES {
         string name
+        int category_id
     }
     QUESTIONS {
         int number
@@ -109,11 +113,18 @@ erDiagram
         int question_category_id
         int question_id
     }
+    MEMOS {
+        text content
+        int user_id
+        int question_id
+    }
 
     USERS ||--o{ QUIZ_RESULTS : "has"
+    USERS ||--o{ MEMOS : "has"
+    CATEGORIES ||--o{ QUESTION_CATEGORIES : "has"
     QUESTION_CATEGORIES ||--o{ QUESTIONS : "has"
     QUESTIONS ||--o{ CHOICES : "has"
-    USERS ||--o{ QUIZ_RESULTS : "has"
+    QUESTIONS ||--o{ MEMOS : "has"
     QUESTION_CATEGORIES ||--o{ QUIZ_RESULTS : "has"
     QUESTIONS ||--o{ QUIZ_RESULTS : "has"
 ```

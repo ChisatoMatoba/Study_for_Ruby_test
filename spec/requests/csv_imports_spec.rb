@@ -6,7 +6,8 @@ RSpec.describe 'CsvImports', type: :request do
   let(:owner_user) { create(:user, :owner) }
 
   describe 'POST /question_categories/:question_category_id/csv_imports' do
-    let(:question_category) { create(:question_category) }
+    let(:category) { create(:category) }
+    let(:question_category) { create(:question_category, category: category) }
     let(:file) { fixture_file_upload('spec/fixtures/files/valid_file.csv', 'text/csv') }
 
     context 'ユーザーが一般の場合' do
@@ -29,7 +30,7 @@ RSpec.describe 'CsvImports', type: :request do
             .and change(Choice, :count)
             .by(12)
 
-          expect(response).to redirect_to(question_category_path(question_category))
+          expect(response).to redirect_to(category_question_category_path(category, question_category))
           expect(flash[:notice]).to eq('正常にインポートできました')
         end
 
@@ -42,7 +43,7 @@ RSpec.describe 'CsvImports', type: :request do
             .and change(Choice, :count)
             .by(8)
 
-          expect(response).to redirect_to(question_category_path(question_category))
+          expect(response).to redirect_to(category_question_category_path(category, question_category))
           expect(flash[:notice]).to eq('正常にインポートできました')
         end
 
@@ -54,14 +55,14 @@ RSpec.describe 'CsvImports', type: :request do
             .and change(Choice, :count)
             .by(4)
 
-          expect(response).to redirect_to(question_category_path(question_category))
+          expect(response).to redirect_to(category_question_category_path(category, question_category))
           expect(flash[:alert]).to eq('問題の保存に失敗しました: 問題番号 が入力されていません')
         end
 
         it 'フォーマットが正しくない場合、エラーメッセージが表示されること' do
           invalid_format_file = fixture_file_upload('spec/fixtures/files/invalid_format_file.csv', 'text/csv')
           post question_category_csv_imports_path(question_category), params: { file: invalid_format_file, overwrite: true }
-          expect(response).to redirect_to(question_category_path(question_category))
+          expect(response).to redirect_to(category_question_category_path(category, question_category))
           expect(flash[:alert]).to eq("CSVのフォーマットが不正です: Any value after quoted field isn't allowed in line 4.")
         end
       end
@@ -69,7 +70,7 @@ RSpec.describe 'CsvImports', type: :request do
       context 'ファイルが存在しない場合' do
         it 'インポートに失敗すること' do
           post question_category_csv_imports_path(question_category)
-          expect(response).to redirect_to(question_category_path(question_category))
+          expect(response).to redirect_to(category_question_category_path(category, question_category))
           expect(flash[:alert]).to eq('インポートに失敗しました')
         end
       end
@@ -79,7 +80,7 @@ RSpec.describe 'CsvImports', type: :request do
       it '正常にインポートされること' do
         sign_in owner_user
         post question_category_csv_imports_path(question_category), params: { file: file, overwrite: true }
-        expect(response).to redirect_to(question_category_path(question_category))
+        expect(response).to redirect_to(category_question_category_path(category, question_category))
         expect(flash[:notice]).to eq('正常にインポートできました')
       end
     end
