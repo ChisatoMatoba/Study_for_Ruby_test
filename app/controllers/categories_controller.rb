@@ -14,22 +14,9 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
 
     if @category.save
-      redirect_to categories_path, notice: 'カテゴリーが正常に作成されました。'
+      redirect_to categories_path, notice: 'カテゴリが正常に作成されました。'
     else
       render :new
-    end
-  end
-
-  def edit
-    @category = Category.find(params[:id])
-  end
-
-  def update
-    @category = Category.find(params[:id])
-    if @category.update(category_params)
-      redirect_to categories_path, notice: 'カテゴリーが正常に更新されました。'
-    else
-      render :edit
     end
   end
 
@@ -38,7 +25,7 @@ class CategoriesController < ApplicationController
     if @category.question_categories.exists?
       redirect_to categories_path, alert: '関連する問題集があるため、このカテゴリは削除できません'
     elsif @category.destroy
-      redirect_to categories_path, notice: 'カテゴリーが正常に削除されました。'
+      redirect_to categories_path, notice: 'カテゴリが正常に削除されました。'
     else
       redirect_to categories_path, alert: @category.errors.full_messages.join(', ')
     end

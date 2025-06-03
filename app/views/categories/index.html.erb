@@ -10,7 +10,6 @@
           <h3 class="mb-0"><%= category.name %></h3>
           <% if current_user&.owner? %>
             <div>
-              <%= link_to '編集', edit_category_path(category), class: "btn btn-warning" %>
               <% if !category.question_categories.exists? %>
                 <%= link_to '削除', category_path(category), data: { turbo_method: :delete, turbo_confirm: "このカテゴリを削除します。よろしいですか？"}, class: "btn btn-danger" %>
               <% else %>
