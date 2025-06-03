@@ -11,7 +11,7 @@ class ResultsController < ApplicationController
   def index
     @session_ts = params[:session_ts].to_i
     @quiz_results = QuizResult.where(session_ts: @session_ts)
-    @question_category = QuestionCategory.includes(:questions).find(@quiz_results.first.question_category_id)
+    @question_category = QuestionCategory.includes(:category, :questions).find(@quiz_results.first.question_category_id)
     @questions = @question_category.questions
 
     # 正答率
