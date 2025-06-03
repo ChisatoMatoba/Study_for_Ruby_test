@@ -1,5 +1,7 @@
 <div class="container">
   <div class="content">
+    <%= link_to "←戻る", categories_path, class: "btn btn-outline-warning mb-5" %>
+
     <h1>問題集作成</h1>
 
     <%= form_with(model: @question_category, url: category_question_categories_path(@category), local: true) do |form| %>
@@ -11,7 +13,6 @@
         <%= form.submit "作成", class: "btn btn-primary mb-3" %>
       </div>
     <% end %>
-
     </div>
   </div>
 </div>
