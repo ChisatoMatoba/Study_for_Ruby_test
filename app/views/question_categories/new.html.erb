@@ -2,7 +2,7 @@
   <div class="content">
     <h1>問題作成</h1>
 
-    <%= form_with(model: @question_category, local: true) do |form| %>
+    <%= form_with(model: @question_category, url: category_question_categories_path(@category), local: true) do |form| %>
       <div class="form-group mb-3">
         <%= form.label :name, '問題名', class: "form-label" %>
         <%= form.text_field :name, class: 'form-control', placeholder: '例：基礎力確認問題' %>

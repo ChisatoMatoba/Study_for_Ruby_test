@@ -37,12 +37,12 @@
                   <tr>
                     <td><%= button_to '1番から解く', question_category_start_quiz_path(question_category, random: false), method: :post, class: "btn btn-success" %></td>
                     <td><%= button_to 'ランダムで解く', question_category_start_quiz_path(question_category, random: true), method: :post, class: "btn btn-success" %></td>
-                    <td><%= link_to question_category.name, question_category_path(question_category), class: "btn btn-link btn-lg" %></td>
+                    <td><%= link_to question_category.name, category_question_category_path(category, question_category), class: "btn btn-link btn-lg" %></td>
                     <td><%= question_category.questions.count %></td>
                     <td><%= question_category.created_at.strftime("%Y/%m/%d") %></td>
                     <td><%= question_category.questions.maximum(:updated_at)&.strftime("%Y/%m/%d") %></td>
                     <% if current_user&.owner? %>
-                      <td><%= link_to '削除', question_category_path(question_category), data: { turbo_method: :delete, turbo_confirm: "問題集全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
+                      <td><%= link_to '削除', category_question_category_path(category, question_category), data: { turbo_method: :delete, turbo_confirm: "問題集全体と今までの成績も削除されます。よろしいですか？"}, class: "btn btn-danger" %></td>
                     <% end %>
                   </tr>
                 <% end %>
@@ -51,14 +51,14 @@
 
             <% if current_user&.admin_or_owner? %>
               <div class="d-grid gap-2 col-4 mx-auto">
-                <%= link_to '問題集を作成', new_question_category_path(category), class: "btn btn-outline-primary" %>
+                <%= link_to '問題集を作成', new_category_question_category_path(category), class: "btn btn-outline-primary" %>
               </div>
             <% end %>
           <% else %>
             <p class="text-center">このカテゴリには問題集がありません</p>
             <% if current_user&.admin_or_owner? %>
               <div class="d-grid gap-2 col-4 mx-auto">
-                <%= link_to '問題集を作成', new_question_category_path(category), class: "btn btn-outline-primary" %>
+                <%= link_to '問題集を作成', new_category_question_category_path(category), class: "btn btn-outline-primary" %>
               </div>
             <% end %>
           <% end %>
