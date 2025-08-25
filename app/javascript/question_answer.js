@@ -91,7 +91,7 @@ document.addEventListener('turbo:load', function () {
 
   // 解説を表示する
   function updateExplanation(explanation) {
-    document.getElementById('explanation').innerHTML = '<b>解説</b>' + explanation;
+    document.getElementById('explanation').innerHTML = marked.parse('<b>解説</b>\n' + explanation);
   }
 
   // 次の問題へ移動する
