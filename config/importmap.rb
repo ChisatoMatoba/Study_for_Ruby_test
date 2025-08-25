@@ -12,4 +12,5 @@ pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.8/lib/inde
 pin "jquery" # @3.7.1
 pin "question_answer", to: "question_answer.js"
 pin "memo_editor", to: "memo_editor.js"
+pin "mypage_memo_editor", to: "mypage_memo_editor.js"
 pin "result_show", to: "result_show.js"

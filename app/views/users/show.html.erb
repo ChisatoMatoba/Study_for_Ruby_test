@@ -1,3 +1,4 @@
+<body data-controller="users" data-action="show">
 <div class="container">
   <div class="content">
     <%= link_to "←戻る", root_path, class: "btn btn-outline-warning mb-5" %>
@@ -92,9 +93,15 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <h6 class="mb-0">問題 <%= question.number %></h6>
-                      <%= link_to 'メモ削除', question_category_question_memo_path(question.question_category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-sm btn-danger' %>
+                      <div class="memo-actions">
+                        <button type="button" class="btn btn-sm btn-outline-primary edit-memo-btn me-2"
+                                data-memo-id="<%= question.memos.find_by(user: @user)&.id %>"
+                                data-question-category-id="<%= question.question_category.id %>"
+                                data-question-id="<%= question.id %>">編集</button>
+                        <%= link_to 'メモ削除', question_category_question_memo_path(question.question_category, question), data: { turbo_method: :delete, turbo_confirm: 'このメモを削除しますか？' }, class: 'btn btn-sm btn-danger' %>
+                      </div>
                     </div>
-                    <div class="mt-2"><%= simple_format(memo) %></div>
+                    <div class="memo-display mt-2"><%= simple_format(memo) %></div>
                   </div>
                 </div>
 
@@ -108,3 +115,6 @@
     </div>
   </div>
 </div>
+
+<%= javascript_include_tag "mypage_memo_editor", type: "module" %>
+</body>
