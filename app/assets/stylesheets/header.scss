@@ -80,6 +80,8 @@ a {
     -webkit-transition: opacity 0.3s ease-in, visibility 0.3s ease-in 0.3s;
             transition: opacity 0.3s ease-in, visibility 0.3s ease-in 0.3s;
     opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     background-color: #ffb74d;
   }
   .cp_offcm02 nav {
@@ -161,6 +163,7 @@ a {
   #cp_toggle02:checked ~ .cp_offcm02 {
     visibility: visible;
     opacity: 1;
+    pointer-events: auto;
     -webkit-transition-delay: 0s;
             transition-delay: 0s;
   }

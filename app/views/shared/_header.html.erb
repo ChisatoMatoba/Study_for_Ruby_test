@@ -6,24 +6,27 @@
   </label>
   </div>
   <header class="cp_offcm02">
-    <nav><ul>
-      <li><a href="/">TOP</a></li>
-      <li><%= link_to '問題', categories_path %></li>
-      <li>
-        <% if user_signed_in? %>
-          <%= link_to 'マイページ', user_path(current_user)%></li>
-        <% end %>
-      <li>
-        <% if user_signed_in? %>
-          <% if current_user&.owner? %>
-            <%= link_to "ユーザー管理", users_path %>
+    <nav>
+      <ul>
+        <li><a href="/">TOP</a></li>
+        <li><%= link_to '問題', categories_path %></li>
+        <li>
+          <% if user_signed_in? %>
+            <%= link_to 'マイページ', user_path(current_user) %>
           <% end %>
-          <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-warning text-white" %>
-        <% else %>
-          <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
-          <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
-        <% end %>
-      </li>
-    </ul></nav>
+        </li>
+        <li>
+          <% if user_signed_in? %>
+            <% if current_user&.owner? %>
+              <%= link_to "ユーザー管理", users_path %>
+            <% end %>
+            <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-warning text-white" %>
+          <% else %>
+            <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
+            <%= link_to 'ユーザー登録', new_user_registration_path, class: "btn btn-outline-warning btn-sm text-white fs-15" %>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
   </header>
 </div>

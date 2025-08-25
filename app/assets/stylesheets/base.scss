@@ -27,3 +27,17 @@
   overflow-x: auto;
   font-family: monospace;
 }
+
+/* スマホ対応テーブル - 横スクロール版 */
+@media (max-width: 768px) {
+  .table-mobile-responsive {
+    th, td {
+      white-space: nowrap;
+      min-width: max-content;
+    }
+
+    .btn {
+      white-space: nowrap;
+    }
+  }
+}
